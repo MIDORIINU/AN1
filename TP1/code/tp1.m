@@ -5,6 +5,7 @@
 % código de Latex los levanta automáticamente para generar el archivo
 % compilado final del informe.
 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Limpio todas las variables globales.
 clear all;
@@ -57,6 +58,7 @@ clc;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Defino el archivo para la captura de la salida del script.
 output_file = './salida.txt';
@@ -101,9 +103,15 @@ x{3} = @(t) -1.5396*t.^3 + 4*t.^2;
 v{3} = @(t) -4.6188*t.^2 + 8*t;
 a{3} = @(t) -9.2376*t + 8;
 
-fn{1} = 'Media carga';
-fn{2} = 'Máxima carga';
-fn{3} = 'Mínima carga';
+% Declaro las funciones para el freno del ascensor.
+x{4} = @(t) 1.0208*t.^3 - 7.84*t - 3.136;
+v{4} = @(t) 3.0625*t.^2 - 7.84;
+a{4} = @(t) 6.125*t;
+
+
+fn{1} = 'Media carga (6 personas)';
+fn{2} = 'Máxima carga (12 personas)';
+fn{3} = 'Mínima carga (0 personas)';
 
 % Declaro un título para los gráficos de las funciones.
 titlex = 'Posición (media carga): x(t) = -0.5443*t.^3 + 2*t.^2';
@@ -114,8 +122,6 @@ legendv = 'v(t)';
 
 titlea = 'Aceleración (media carga): a(t) = -3.2658*t + 4';
 legenda = 'a(t)';
-
-
 
 % Declaro la cantidad de puntos para los gráficos.
 cant_points = 1E6;
@@ -160,11 +166,10 @@ end %if
 
 fprintf('Trabajando en: %s %s sobre %s.\n\n', env, version, OS);
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % En el caso de MATLAB debo verificar que el paquete simbólico esté
 % disponible, para el cálculo simbólico de la derivada, en Octave debo
 % además cargar el paquete.
@@ -206,8 +211,11 @@ else            % Si estoy trabajando en Octave.
     end %if
     
 end %if
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 fprintf('Creando el directorio para las imágenes...');
 
 % Creo el directorio para las imágenes y verifico que exista.
@@ -302,8 +310,10 @@ fprintf('Listo\n\n');
 % Generación completa.
 fprintf('Listo\n\n\n');
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Genero los nombres completos de los archivos de resultados .
 
@@ -315,23 +325,32 @@ newton_convergence_complete_name = ...
     fullfile(results_directory, ...
     strjoin({newton_convergence_name, '.csv'}, ''));
 
+% Genero el nombre completo para el archivo de semillas.
+seeds_complete_name = ...
+    fullfile(results_directory, ...
+    strjoin({seeds, '.csv'}, ''));
+
 if (exist(newton_results_complete_name, 'file'))
     delete(newton_results_complete_name);
 end
 
+if (exist(newton_convergence_complete_name, 'file'))
+    delete(newton_convergence_complete_name);
+end
+
+if (exist(seeds_complete_name, 'file'))
+    delete(seeds_complete_name);
+end
+
 
 %%
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Calculo la cantidad de cifras significativas para la tolerancia.
 cant_signif = ceil(-log10(tol));
 
 fprintf('\n\n\nEjecutando los métodos numéricos...\n\n\n');
 
-
-
-
-%%
 
 t_acel_30_percent = zeros(1, 3);
 
@@ -356,7 +375,7 @@ for ii = 1:3
     
     
     fprintf(strjoin({'El 30%% de la aceleración',...
-        ' se alcanza en t_acel_30_percent=%.', ...
+        ' se alcanza en t_acel_30_percent = %.', ...
         num2str(cant_signif) ,'f.\n\n'}, ''), ...
         t_acel_30_percent(ii));
     
@@ -380,7 +399,7 @@ for ii = 1:3
     % Busco la raíz por el método de bisección.
     fprintf(strjoin({'Ejecutando el método de bisección'...
         'para f{', num2str(ii),'}, como arranque,', ...
-        ' para la tolerancia %.1e...'}), 0.1);    
+        ' para la tolerancia %.1e...'}), 0.1);
     
     fprintf('Listo\n\n');
     
@@ -391,10 +410,23 @@ for ii = 1:3
     fprintf(strjoin({'La semilla a usar para la búsqueda', ...
         'de la raíz es: %.5f\n\n'}), seed);
     
+    seeds_table = [ai(ii), bi(ii), seed];
+    
+    % Guardo el intervalo y la semilla en un archivo.
+    fprintf('Salvando las semillas en un archivo "CSV"......');
+    
+    % Guardo las semillas.
+    dlmwrite(seeds_complete_name, ...
+        seeds_table, 'precision','%.15f', '-append');
+    
+    % Salvado completo.
+    fprintf('Listo\n\n');
+    
     
     % Busco la raíz por el método de Newton-Raphson.
     fprintf(strjoin({'Ejecutando el método de Newton-Raphson'...
-        'para f{', num2str(ii),'} y para la tolerancia %.1e...'}), tol);
+        'para f{', num2str(ii), ...
+        '} y para la tolerancia %.1e...'}, ''), tol);
     
     % Ejecuto el método.
     [r0, delta, erel, ...
@@ -481,423 +513,154 @@ for ii = 1:3
     
     % Guardo los valores de las estimaciones.
     dlmwrite(newton_convergence_complete_name, ...
-        conv_results, 'precision','%.15f');
+        conv_results, 'precision','%.15f', '-append');
     
     % Guardado completo.
     fprintf('Listo\n\n');
     
 end
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-return;
+fprintf('****************************\nCalculando para v{4}:\n\n');
+
+fprintf(strjoin({'Para el caso del freno del ascensor', ...
+    ' usamos Newton-Raphson para calcular el tiempo en el', ...
+    ' que se alcanza velocidad 0, la función utilizada es:\n\n'},''));
+
+disp(v{4});
 
 
+% Busco la raíz por el método de bisección.
+fprintf(strjoin({'Ejecutando el método de bisección'...
+    'para v{4}, como arranque,', ...
+    ' para la tolerancia %.1e...'}, ''), 0.3);
 
-fprintf('Buscando intervalo para la raíz de la función f...');
-
-% Hallo un intervalo con límites enteros conteniendo a la raíz.
-[a, b, success] = findinterval(f, 100, 0);
-
-% Chequeo que se haya encontrado un intervalo.
-if (~success)
-    fprintf(strjoin({'\nNo se encontró un intervalo ', ...
-        'para la raíz.\n\n'}), maxcount);
-    
-    exit;
-else
-    fprintf('Intervalo hallado: (%d, %d).\n\n', a, b);
-end
-
-fprintf(strjoin({'Generando un gráfico de la función f en el intervalo',...
-    'hallado, [%d, %d]...'}), a, b);
-
-% Genero un gráfico de la función en el intervalo que contiene a la raíz.
-graphic_handle = grafico(f, a, b, cant_points, title, legend, 75);
-
-% Generación completa.
 fprintf('Listo\n\n');
 
-fprintf('Salvando el gráfico de la función f en un archivo "PNG"......');
 
-% Salvo el gráfico en un archivo.
-saveas(graphic_handle, fullfile(images_directory, ...
-    grafico_f_2));
+[~, seed, ~] = method_bisection(v{4}, 0, 2, 0.3);
 
-% Salvado completo.
-fprintf('Listo\n\n');
-
-% Calculo la semilla (valor intermedio) para el cálculo de las raíces.
-seed = a + (b - a)/2;
 
 fprintf(strjoin({'La semilla a usar para la búsqueda', ...
-    'de la raíz\\punto fijo es: %.3f\n\n'}), seed);
+    'de la raíz es: %.5f\n\n'}), seed);
 
-fprintf(strjoin({'Las semillas a usar para la búsqueda', ...
-    'de la raíz por el método Regula Falsi son: %.3f, %.3f\n\n'}), a, b);
+seeds_table = [0, 2, seed];
 
-% Genero el nombre completo para el archivo de semillas.
-seeds_complete_name = ...
-    fullfile(results_directory, ...
-    strjoin({seeds, '.csv'}, ''));
-
-% Genero el array de semillas.
-seeds_table = [a, b; seed, 0];
-
-
-% Guardo los resultados en un archivo.
+% Guardo el intervalo y la semilla en un archivo.
 fprintf('Salvando las semillas en un archivo "CSV"......');
 
 % Guardo las semillas.
 dlmwrite(seeds_complete_name, ...
-    seeds_table, 'precision','%.15f');
+    seeds_table, 'precision','%.15f', '-append');
 
 % Salvado completo.
 fprintf('Listo\n\n');
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%
-% Genero los nombres completos de los archivos de resultados finales para
-% cada uno de los métodos.
 
-fixed_point_results_complete_name = ...
-    fullfile(results_directory, ...
-    strjoin({fixed_point_results_name, '.csv'}, ''));
+% Busco la raíz por el método de Newton-Raphson.
+fprintf(strjoin({'Ejecutando el método de Newton-Raphson'...
+    'para v{4} y para la tolerancia %.1e...'}), tol);
 
-fixed_point_convergence_complete_name = ...
-    fullfile(results_directory, ...
-    strjoin({fixed_point_convergence_name, '.csv'}, ''));
+% Ejecuto el método.
+[r0, delta, erel, ...
+    table, success] = ...
+    method_newton(v{4}, seed, tol, max_iter);
 
-newton_results_complete_name = ...
-    fullfile(results_directory, ...
-    strjoin({newton_results_name, '.csv'}, ''));
-
-newton_convergence_complete_name = ...
-    fullfile(results_directory, ...
-    strjoin({newton_convergence_name, '.csv'}, ''));
-
-regula_falsi_results_complete_name = ...
-    fullfile(results_directory, ...
-    strjoin({regula_falsi_results_name, '.csv'}, ''));
-
-regula_falsi_convergence_complete_name = ...
-    fullfile(results_directory, ...
-    strjoin({regula_falsi_convergence_name, '.csv'}, ''));
-
-% Borro los archivos de resultados finales si existen.
-if (exist(fixed_point_results_complete_name, 'file'))
-    delete(fixed_point_results_complete_name);
-end
-
-if (exist(newton_results_complete_name, 'file'))
-    delete(newton_results_complete_name);
-end
-
-if (exist(regula_falsi_results_complete_name, 'file'))
-    delete(regula_falsi_results_complete_name);
-end
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%
-% Ejecuto los tres métodos para una de las tolerancias pedidas,
-% guardando los resultados en un archivo.
-
-fprintf('\n\n\nEjecutando los métodos numéricos...\n\n\n');
-
-for ii = 1:cant_tols
+% Chequeo que el método alcanzó la precisón pedida en menos
+% de las máximas iteraciones.
+if (~success)
+    fprintf(strjoin({'\nFalló el método de Newton-Raphson', ...
+        'para la función v{4}.\n\n'}));
     
-    % Calculo la cantidad de cifras significativas para la tolerancia.
-    cant_signif = ceil(-log10(tols(:, ii)));
-    
-    % Busco el punto fijo.
-    fprintf(strjoin({'Ejecutando el método del punto fijo'...
-        'para g y para la tolerancia %.1e...'}), tols(:, ii));
-    
-    % Ejecuto el método.
-    [r0, delta, erel, ...
-        table, success] = ...
-        method_fixedpoint(g, seed, tols(:, ii), max_iter);
-    
-    % Chequeo que el método alcanzó la precisón pedida en menos
-    % de las máximas iteraciones.
-    if (~success)
-        fprintf(strjoin({'\nFalló el método del punto fijo', ...
-            'para g y la tolerancia %.1e.\n'}), tols(ii));
-        
-        return;
-    else
-        fprintf('Listo\n\n');
-    end % if
-    
-    % Extraigo la cantidad de iteraciones requeridas como
-    % el largo de la tabla.
-    iter_req = size(table, 1);
-    
-    % Armo el string para formatear la salida.
-    format_str = sprintf(...
-        strjoin({'Solución hallada después de %%d iteraciones:'...
-        '%%.%df +- %%.1e\n\n'}), ...
-        cant_signif);
-    
-    % Muestro el resultado.
-    fprintf(format_str, iter_req, r0, tols(:, ii));
-    
-    % Guardo los resultados en un archivo.
-    fprintf('Salvando los resultados en un archivo "CSV"......');
-    
-    % Guardo la tabla de las iteraciones.
-    dlmwrite(fullfile(results_directory, ...
-        strjoin({fixed_point_prefix, int2str(ii), '.csv'}, '')), ...
-        table, 'precision','%.15f');
-    
-    % Armo la tabla de resultados finales con:
-    % 1 - Índice para la tolerancia.
-    % 2 - Solución hallada.
-    % 3 - Tolerancia pedida.
-    % 4 - Cantidad de cifras significativas correspondiente.
-    % 5 - Delta obtenido.
-    % 6 - Error relativo.
-    % 7 - Cantidad de iteraciones requeridas.
-    results = [ii, r0, tols(:, ii), cant_signif, delta, erel, iter_req];
-    
-    % Guardo el archivo de resultados finales.
-    dlmwrite(fixed_point_results_complete_name, ...
-        results, 'precision','%.15f', '-append');
-    
-    % Guardado completo.
+    return;
+else
     fprintf('Listo\n\n');
-    
-    % Calculo el orden de convergencia y la constante asintótica
-    % estimadas, en base a los últimos valores de la última tabla.
-    if (ii == cant_tols )
-        fprintf('Estimando el orden de convergencia......');
-        
-        % Invoco al cálculo.
-        [order, asintconst, asintconstder, ~, interm1, interm2, ...
-            interm3, interm4, interm5, interm6] = ...
-            estimate_order(g, table(iter_req -3, 2), ...
-            table(iter_req - 2, 2), ...
-            table(iter_req - 1, 2), table(iter_req, 2));
-        
-        % Estimación completa.
-        fprintf('Listo\n\n');
-        
-        % Muestro el valor estimado.
-        fprintf(strjoin({'El orden de convergencia estimado', ...
-            'para el método del punto fijo es %.8f.\n\n'}), order);
-        
-        % Armo el array con los valores a guardar.
-        conv_results = ...
-            [order, asintconst, asintconstder, interm1, interm2, ...
-            interm3, interm4, interm5, interm6];
-        
-        % Guardo los resultados de la estimación en un archivo.
-        fprintf(strjoin({'Salvando los resultados de la estimación', ...
-            'del orden de convergencia en un archivo "CSV"......'}));
-        
-        % Guardo los valores de las estimaciones.
-        dlmwrite(fixed_point_convergence_complete_name, ...
-            conv_results, 'precision','%.15f');
-        
-        % Guardado completo.
-        fprintf('Listo\n\n');
-    end
-    
-    % Busco la raíz por el método de Newton-Raphson.
-    fprintf(strjoin({'Ejecutando el método de Newton-Raphson'...
-        'para f y para la tolerancia %.1e...'}), tols(:, ii));
-    
-    % Ejecuto el método.
-    [r0, delta, erel, ...
-        table, success] = ...
-        method_newton(f, seed, tols(:, ii), max_iter);
-    
-    % Chequeo que el método alcanzó la precisón pedida en menos
-    % de las máximas iteraciones.
-    if (~success)
-        fprintf(strjoin({'\nFalló el método de Newton-Raphson', ...
-            'para la tolerancia %.1e.\n\n'}), tols(ii));
-        
-        return;
-    else
-        fprintf('Listo\n\n');
-    end %if
-    
-    % Extraigo la cantidad de iteraciones requeridas como
-    % el largo de la tabla.
-    iter_req = size(table, 1);
-    
-    % Armo el string para formatear la salida.
-    format_str = sprintf(...
-        strjoin({'Raíz hallada después de %%d iteraciones:'...
-        '%%.%df +- %%.1e\n\n'}), ...
-        cant_signif);
-    
-    % Muestro el resultado.
-    fprintf(format_str, iter_req, r0, tols(:, ii));
-    
-    % Guardo los resultados en un archivo.
-    fprintf('Salvando los resultados en un archivo "CSV"......');
-    
-    % Guardo la tabla de las iteraciones.
-    dlmwrite(fullfile(results_directory, ...
-        strjoin({newton_prefix, int2str(ii), '.csv'}, '')),  ...
-        table, 'precision','%.15f');
-    
-    % Armo la tabla de resultados finales con:
-    % 1 - Índice para la tolerancia.
-    % 2 - Raíz hallada.
-    % 3 - Tolerancia pedida.
-    % 4 - Cantidad de cifras significativas correspondiente.
-    % 5 - Delta obtenido.
-    % 6 - Error relativo.
-    % 7 - Cantidad de iteraciones requeridas.
-    results = [ii, r0, tols(:, ii), cant_signif, delta, erel, iter_req];
-    
-    % Guardo el archivo de resultados finales.
-    dlmwrite(newton_results_complete_name, ...
-        results, 'precision','%.15f', '-append');
-    
-    % Guardado completo.
-    fprintf('Listo\n\n');
-    
-    % Calculo el orden de convergencia y la constante asintótica
-    % estimadas, en base a los últimos valores de la última tabla.
-    if (ii == cant_tols )
-        fprintf('Estimando el orden de convergencia......');
-        
-        % Invoco al cálculo.
-        [order, asintconst, ~, asintconstder, interm1, interm2, ...
-            interm3, interm4, interm5, interm6] = ...
-            estimate_order(f, table(iter_req -3, 2), ...
-            table(iter_req - 2, 2), ...
-            table(iter_req - 1, 2), table(iter_req, 2));
-        
-        % Estimación completa.
-        fprintf('Listo\n\n');
-        
-        % Muestro el valor estimado.
-        fprintf(strjoin({'El orden de convergencia estimado', ...
-            'para el método de Newton-Raphson es %.8f.\n\n'}), order);
-        
-        % Armo el array con los valores a guardar.
-        conv_results = ...
-            [order, asintconst, asintconstder, interm1, interm2, ...
-            interm3, interm4, interm5, interm6];
-        
-        % Guardo los resultados de la estimación en un archivo.
-        fprintf(strjoin({'Salvando los resultados de la estimación', ...
-            'del orden de convergencia en un archivo "CSV"......'}));
-        
-        % Guardo los valores de las estimaciones.
-        dlmwrite(newton_convergence_complete_name, ...
-            conv_results, 'precision','%.15f');
-        
-        % Guardado completo.
-        fprintf('Listo\n\n');
-    end
-    
-    % Busco la raíz por el método Regula Falsi.
-    fprintf(strjoin({'Ejecutando el método Regula Falsi'...
-        'para f y para la tolerancia %.1e...'}), tols(:, ii));
-    
-    % Ejecuto el método.
-    [r0, delta, erel, ...
-        table, success] = ...
-        method_regulafalsi(f, a, b, tols(:, ii), max_iter);
-    
-    % Chequeo que el método alcanzó la precisón pedida en menos
-    % de las máximas iteraciones.
-    if (~success)
-        fprintf(strjoin({'\nFalló el método Regula Falsi', ...
-            'para la tolerancia %.1e.\n\n'}), tols(ii));
-        
-        return;
-    else
-        fprintf('Listo\n\n');
-    end %if
-    
-    % Extraigo la cantidad de iteraciones requeridas como
-    % el largo de la tabla.
-    iter_req = size(table, 1);
-    
-    % Armo el string para formatear la salida.
-    format_str = sprintf(...
-        strjoin({'Raíz hallada después de %%d iteraciones:'...
-        '%%.%df +- %%.1e\n\n'}), ...
-        cant_signif);
-    
-    % Muestro el resultado.
-    fprintf(format_str, iter_req, r0, tols(:, ii));
-    
-    % Guardo los resultados en un archivo.
-    fprintf('Salvando los resultados en un archivo "CSV"......');
-    
-    % Guardo la tabla de las iteraciones.
-    dlmwrite(fullfile(results_directory, ...
-        strjoin({regula_falsi_prefix, int2str(ii), '.csv'}, '')),  ...
-        table, 'precision','%.15f');
-    
-    % Armo la tabla de resultados finales con:
-    % 1 - Índice para la tolerancia.
-    % 2 - Raíz hallada.
-    % 3 - Tolerancia pedida.
-    % 4 - Cantidad de cifras significativas correspondiente.
-    % 5 - Delta obtenido.
-    % 6 - Error relativo.
-    % 7 - Cantidad de iteraciones requeridas.
-    results = [ii, r0, tols(:, ii), cant_signif, delta, erel, iter_req];
-    
-    % Guardo el archivo de resultados finales.
-    dlmwrite(regula_falsi_results_complete_name, ...
-        results, 'precision','%.15f', '-append');
-    
-    % Guardado completo.
-    fprintf('Listo\n\n');
-    
-    % Calculo el orden de convergencia y la constante asintótica
-    % estimadas, en base a los últimos valores de la última tabla.
-    if (ii == cant_tols )
-        fprintf('Estimando el orden de convergencia......');
-        
-        % Invoco al cálculo.
-        [order, asintconst, asintconstder, ~, interm1, interm2, ...
-            interm3, interm4, interm5, interm6] = ...
-            estimate_order(f, table(iter_req -3, 2), ...
-            table(iter_req - 2, 2), ...
-            table(iter_req - 1, 2), table(iter_req, 2));
-        
-        % Estimación completa.
-        fprintf('Listo\n\n');
-        
-        % Muestro el valor estimado.
-        fprintf(strjoin({'El orden de convergencia estimado', ...
-            'para el método Regula Falsi es %.8f.\n\n'}), order);
-        
-        % Armo el array con los valores a guardar.
-        conv_results = ...
-            [order, asintconst, asintconstder, interm1, interm2, ...
-            interm3, interm4, interm5, interm6];
-        
-        % Guardo los resultados de la estimación en un archivo.
-        fprintf(strjoin({'Salvando los resultados de la estimación', ...
-            'del orden de convergencia en un archivo "CSV"......'}));
-        
-        % Guardo los valores de las estimaciones.
-        dlmwrite(regula_falsi_convergence_complete_name, ...
-            conv_results, 'precision','%.15f');
-        
-        % Guardado completo.
-        fprintf('Listo\n\n');
-    end
-    
-    
-end %for
+end %if
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Extraigo la cantidad de iteraciones requeridas como
+% el largo de la tabla.
+iter_req = size(table, 1);
+
+% Armo el string para formatear la salida.
+format_str = sprintf(...
+    strjoin({'Raíz hallada después de %%d iteraciones:'...
+    '%%.%df +- %%.1e\n\n'}), ...
+    cant_signif);
+
+% Muestro el resultado.
+fprintf(format_str, iter_req, r0, tol);
+
+
+% Guardo los resultados en un archivo.
+fprintf('Salvando los resultados en un archivo "CSV"......');
+
+% Guardo la tabla de las iteraciones.
+dlmwrite(fullfile(results_directory, ...
+    strjoin({newton_prefix, int2str(ii), '.csv'}, '')),  ...
+    table, 'precision','%.15f');
+
+% Armo la tabla de resultados finales con:
+% 1 - Índice.
+% 2 - Raíz hallada.
+% 3 - Tolerancia pedida.
+% 4 - Cantidad de cifras significativas correspondiente.
+% 5 - Delta obtenido.
+% 6 - Error relativo.
+% 7 - Cantidad de iteraciones requeridas.
+results = [ii, r0, tol, cant_signif, delta, erel, iter_req];
+
+% Guardo el archivo de resultados finales.
+dlmwrite(newton_results_complete_name, ...
+    results, 'precision','%.15f', '-append');
+
+% Guardado completo.
+fprintf('Listo\n\n');
+
+% Calculo el orden de convergencia y la constante asintótica
+% estimadas, en base a los últimos valores de la última tabla.
+
+fprintf('Estimando el orden de convergencia......');
+
+% Invoco al cálculo.
+[order, asintconst, ~, asintconstder, interm1, interm2, ...
+    interm3, interm4, interm5, interm6] = ...
+    estimate_order(f{ii}, table(iter_req -3, 2), ...
+    table(iter_req - 2, 2), ...
+    table(iter_req - 1, 2), table(iter_req, 2));
+
+% Estimación completa.
+fprintf('Listo\n\n');
+
+% Muestro el valor estimado.
+fprintf(strjoin({'El orden de convergencia estimado', ...
+    'para el método de Newton-Raphson es %.8f.\n\n'}), order);
+
+% Armo el array con los valores a guardar.
+conv_results = ...
+    [order, asintconst, asintconstder, interm1, interm2, ...
+    interm3, interm4, interm5, interm6];
+
+% Guardo los resultados de la estimación en un archivo.
+fprintf(strjoin({'Salvando los resultados de la estimación', ...
+    'del orden de convergencia en un archivo "CSV"......'}));
+
+% Guardo los valores de las estimaciones.
+dlmwrite(newton_convergence_complete_name, ...
+    conv_results, 'precision','%.15f', '-append');
+
+% Guardado completo.
+fprintf('Listo\n\n');
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % El script se ejecutó correctamente..
 fprintf('\n\nEjecución del TP1 terminada.\n\n');
@@ -920,6 +683,6 @@ else %if
     fprintf('Listo\n\n');
 end %if
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
