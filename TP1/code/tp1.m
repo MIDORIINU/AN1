@@ -84,7 +84,7 @@ x = cell(1, 3); % Punteros a función de posición para n/2, n y o pers.
 v = cell(1, 3); % Punteros a función de velocidad para n/2, n y o pers.
 a = cell(1, 3); % Punteros a función de aceleración para n/2, n y o pers.
 f = cell(1, 3); % Punteros a función para aplicar N-R para n/2, n y o pers.
-
+fn = cell(1, 3);% Nonmbres de las funciones.
 
 % Declaro las funciones para media carga del ascensor.
 x{1} = @(t) -0.5443*t.^3 + 2.*t.^2;
@@ -101,7 +101,9 @@ x{3} = @(t) -1.5396*t.^3 + 4*t.^2;
 v{3} = @(t) -4.6188*t.^2 + 8*t;
 a{3} = @(t) -9.2376*t + 8;
 
-
+fn{1} = 'Media carga';
+fn{2} = 'Máxima carga';
+fn{3} = 'Mínima carga';
 
 % Declaro un título para los gráficos de las funciones.
 titlex = 'Posición (media carga): x(t) = -0.5443*t.^3 + 2*t.^2';
@@ -283,7 +285,7 @@ saveas(graphic_v_handle, fullfile(images_directory, ...
 % Generación completa.
 fprintf('Listo\n\n');
 
-graphic_a_handle = grafico(a{1}, ai(1), bi(1), cant_points, titlev, ...
+graphic_a_handle = grafico(a{1}, ai(1), bi(1), cant_points, titlea, ...
     legenda, false, [0 1 0], 75);
 
 fprintf(...
@@ -313,6 +315,11 @@ newton_convergence_complete_name = ...
     fullfile(results_directory, ...
     strjoin({newton_convergence_name, '.csv'}, ''));
 
+if (exist(newton_results_complete_name, 'file'))
+    delete(newton_results_complete_name);
+end
+
+
 %%
 
 
@@ -329,6 +336,10 @@ fprintf('\n\n\nEjecutando los métodos numéricos...\n\n\n');
 t_acel_30_percent = zeros(1, 3);
 
 for ii = 1:3
+    
+    fprintf('****************************\nCalculando para %s:\n\n', ...
+        fn{ii});
+    
     
     fprintf(strjoin({'Hallamos el valor de tiempo en', ...
         ' el cual se alcanza el 30%% de la aceleración positiva. \n', ...
@@ -361,9 +372,24 @@ for ii = 1:3
     disp(f{ii});
     
     
-%     graphic_x_handle = grafico(f{1}, ai(1), bi(1), cant_points, ...
-%         'Función a la cual aplicamos Newton-Raphson', ...
-%         legendx, false, [1 0.3 1], 75);
+    %     graphic_x_handle = grafico(f{1}, ai(1), bi(1), cant_points, ...
+    %         'Función a la cual aplicamos Newton-Raphson', ...
+    %         legendx, false, [1 0.3 1], 75);
+    
+    
+    % Busco la raíz por el método de bisección.
+    fprintf(strjoin({'Ejecutando el método de bisección'...
+        'para f{', num2str(ii),'}, como arranque,', ...
+        ' para la tolerancia %.1e...'}), 0.1);    
+    
+    fprintf('Listo\n\n');
+    
+    
+    [~, seed, ~] = method_bisection(f{ii}, ai(ii), bi(ii), 0.1);
+    
+    
+    fprintf(strjoin({'La semilla a usar para la búsqueda', ...
+        'de la raíz es: %.5f\n\n'}), seed);
     
     
     % Busco la raíz por el método de Newton-Raphson.
@@ -373,7 +399,7 @@ for ii = 1:3
     % Ejecuto el método.
     [r0, delta, erel, ...
         table, success] = ...
-        method_newton(f{ii}, 1, tol, max_iter);
+        method_newton(f{ii}, seed, tol, max_iter);
     
     % Chequeo que el método alcanzó la precisón pedida en menos
     % de las máximas iteraciones.
@@ -458,7 +484,7 @@ for ii = 1:3
         conv_results, 'precision','%.15f');
     
     % Guardado completo.
-    fprintf('Listo\n\n');    
+    fprintf('Listo\n\n');
     
 end
 
