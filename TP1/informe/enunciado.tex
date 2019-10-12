@@ -62,7 +62,7 @@ Las constantes $A$, $B$, $C$ y $D$ se obtienen de las condiciones y parámetros 
 \end{equation}
 
 
-Se obtiene $A = -0.2963 \si[per-mode=symbol]{\meter\per\second\cubed}$ y $B = 1.3333 \si[per-mode=symbol]{\meter\per\second\squared}$, con lo que nos queda:
+Se obtiene $t_{f} = 3 \si[per-mode=symbol]{\second}$, $A = -0.2963 \si[per-mode=symbol]{\meter\per\second\cubed}$ y $B = 1.3333 \si[per-mode=symbol]{\meter\per\second\squared}$, con lo que nos queda:
 
 
 \begin{empheq}[box={\mybluebox[5pt]}]{equation}
@@ -118,13 +118,49 @@ Se obtiene $A = -0.5443 \si[per-mode=symbol]{\meter\per\second\cubed}$ y $t_{f} 
 
 
 
-\subsection{Dimensionamiento de los frenos del ascensor}
+\subsection{Planteo extra - Dimensionamiento de los frenos del ascensor}
+
+Para el dimensionamiento del frenado del ascensor, partimos de suponer que el ascensor cae de la posición de reposo, moviéndose en caída libre,  $a_{\left( t \right)} = g$, durante los $0.8 \si[per-mode=symbol]{\second}$ que le toma al sistema detectar el fallo, y dimensionando el frenado de tal forma de limitar la aceleración, el sistema solo logra detener totalmente el ascensor si este se encuentra a una altura mínima determinada, el sistema se completa con un sistema de topes hidráulicos o buffers, figura~\figref{fig:fig_elevator_buffer}, que absorben la energía restante cuando la cabina del ascensor los golpea, este tipo de buffers son obligatorios en ascensores que desarrollan velocidades que cruzan un umbral establecido por normas.
 
 
+%%\begin{figure}[!h] %htb
+\begin{wrapfigure}{l}{0.5 \linewidth}
+\begin{center}
+\includegraphics[width=0.35 \linewidth, keepaspectratio=true]{img/diagrams/elevator-buffer.png} %% , angle=90 trim={<left> <lower> <right> <upper>}
+\caption{\label{fig:fig_elevator_buffer} \footnotesize{Buffers hidráulicos.}}
+\end{center}
+\end{wrapfigure}
+%%\end{figure}
+
+Planteamos además la condición que el ascensor tarde $1.6 \si[per-mode=symbol]{\second}$ en detener la cabina, valor que permite lograr una aceleración máxima aceptable, también se plantea a máxima carga y que el frenado se hará a aceleración lineal. Con estás consideraciones, se tiene que se alcanza una velocidad de caída de $-7.84 \si[per-mode=symbol]{meter\per\second}$ antes de que se accione el sistema de frenado y cayendo en ese lapso $3.136 \si[per-mode=symbol]{\meter}$, estos valores permitirán diseñar el buffer hidráulico para el peor caso.  Luego con estos valores y la condición de aceleración se plantea:
 
 
+\begin{equation}
+ \begin{cases}
+ a_f{_{\left( t \right)}} = & A \cdot t + B \\
+ v_f{_{\left( t \right)}} = &\frac{A}{2} \cdot t^2 + B \cdot t + C\\
+ x_f{_{\left( t \right)}} = &\frac{A}{6} \cdot t^3 + \frac{B}{2} \cdot t^2 + C \cdot t + D\\
+ v_{\left( t_{f} \right)} =& 0\\
+ a_{\left( t_{f} \right)} =& g\\ 
+ t_{f} = 1.6 \si[per-mode=symbol]{\second}  
+ \end{cases} 
+\end{equation}
+
+De donde obtenemos:
+
+\begin{empheq}[box={\mybluebox[5pt]}]{equation}
+ \begin{cases}
+ {x_{cmin}}_{\left( t \right)} = & 1.0203 \si[per-mode=symbol]{\meter\per\second\cubed} \cdot t^3 - 7.84 \si[per-mode=symbol]{\meter\per\second\squared} \cdot t - 3.136 \si[per-mode=symbol]{\meter} \\
+ {v_{cmin}}_{\left( t \right)} = & 3.0625 \si[per-mode=symbol]{\meter\per\second\cubed} \cdot t^2 7.84 \si[per-mode=symbol]{\meter\per\second\squared}\\
+ {a_{cmin}}_{\left( t \right)} = & 6.125 \si[per-mode=symbol]{\meter\per\second\cubed} \cdot t
+ \end{cases} 
+\end{empheq}
 
 
+Donde la aceleración lineal implica una fuerza lineal por parte del motor para lograr este frenado.
+
+
+\clearpage
 
 
 \subsection{Resolución del problema numérico}
@@ -143,7 +179,7 @@ A continuación se muestran las gráficas de las funciones de posición, velocid
 
 \begin{figure}[!h] %htb
 \begin{center}
-\includegraphics[width= \linewidth, keepaspectratio=true, angle=90]{img/grafico_funcion_x.png} %% , angle=90 trim={<left> <lower> <right> <upper>}
+\includegraphics[width=1.2 \textwidth, keepaspectratio=true, angle=90]{img/grafico_funcion_x.png} %% , angle=90 trim={<left> <lower> <right> <upper>}
 \caption{\label{fig:fig_position_n_2} \footnotesize{Posición en función del tiempo a media carga.}}
 \end{center}
 \end{figure}
@@ -152,7 +188,7 @@ A continuación se muestran las gráficas de las funciones de posición, velocid
 
 \begin{figure}[!h] %htb
 \begin{center}
-\includegraphics[width= \linewidth, keepaspectratio=true, angle=90]{img/grafico_funcion_v.png} %% , angle=90 trim={<left> <lower> <right> <upper>}
+\includegraphics[width=1.2 \textwidth, keepaspectratio=true, angle=90]{img/grafico_funcion_v.png} %% , angle=90 trim={<left> <lower> <right> <upper>}
 \caption{\label{fig:fig_position_n_2} \footnotesize{Valocidad en función del tiempo a media carga.}}
 \end{center}
 \end{figure}
@@ -161,7 +197,7 @@ A continuación se muestran las gráficas de las funciones de posición, velocid
 
 \begin{figure}[!h] %htb
 \begin{center}
-\includegraphics[width= \linewidth, keepaspectratio=true, angle=90]{img/grafico_funcion_a.png} %% , angle=90 trim={<left> <lower> <right> <upper>}
+\includegraphics[width=1.2 \textwidth, keepaspectratio=true, angle=90]{img/grafico_funcion_a.png} %% , angle=90 trim={<left> <lower> <right> <upper>}
 \caption{\label{fig:fig_position_n_2} \footnotesize{Aceleración en función del tiempo a media carga.}}
 \end{center}
 \end{figure}

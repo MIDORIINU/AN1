@@ -1,0 +1,26 @@
+
+A continuación se listan los archivos de \textbf{MATLAB} y su función: \\\\
+
+
+\textbf{\quotemarks{tp1.m}}~(apéndice~\apendref{apendix:file_tp1}): Script principal que se debe ejecutar para realizar todos los cálculos y generar los archivos de resultados.\\
+
+\textbf{\quotemarks{grafico.m}}~(apéndice~\apendref{apendix:file_grafico}): Función que grafica una función entre dos valores dados.\\
+
+\textbf{\quotemarks{estimate\_order.m}}~(apéndice~\apendref{apendix:file_estimate_order}): Función que, dados las 4 últimas estimaciones de una raíz/solución de un método numérico, estima el orden de convergencia y la constante asintótica del método, la estimación es mejor cuanto mayor es la precisión de las estimaciones usadas.\\
+
+\textbf{\quotemarks{method\_newton.m}}~(apéndice~\apendref{apendix:file_method_newton}): Función que implementa el algoritmo del método de Newton-Raphson.\\
+
+\textbf{\quotemarks{method\_bisection.m}}~(apéndice~\apendref{apendix:file_method_bisection}): Función que implementa el algoritmo del método de bisección usado como arranque.\\\\
+
+En el apéndice correspondiente~(apéndice~\apendref{apendix:files}) se incluye el código completo de cada archivo.\\\\
+
+\textbf{\quotemarks{salida.txt}}~(apéndice~\apendref{apendix:file_salida}): La salida del script principal, se captura automáticamente en \textbf{MATLAB} u \textbf{Octave} al ejecutar el script principal.
+
+\clearpage
+
+\subsection{Sobre los archivos de \textbf{MATLAB} y \textbf{Octave}}
+
+Hay algunas cosas a comentar sobre las diferencias entre \textbf{MATLAB} y \textbf{Octave}, como se comentó anteriormente, se logró la compatibilidad de ejecución entre los entornos, sin embargo las salidas no son completamente equivalentes, debido a limitaciones en \textbf{Octave}, las salidas gráficas no son completamente equivalentes, en particular \textbf{MATLAB} permite la generación de \textbf{DataTips}, cosa que \textbf{Octave} aún no soporta, otra cuestión quizás mas importante es la eficiencia en ejecución, en algunos casos los tiempo de ejecución en \textbf{Octave} se hacen demasiado largos si se usan arrays muy extensos, lo cual se mitigó usando compilación condicional. Otra cosa a mencionar que no hace a la funcionalidad directamente, pero si a la presentación, es que debido a limitaciones en ambos entornos respecto a la codificación de los archivos y soporte incompleto o inadecuado de \textbf{UNICODE} en la línea de comando de \textbf{Windows}, se producen problemas en las salidas con símbolos que no sean parte de Latin-1 (ISO 8859-1), en particular las palabras con tilde, esto se ve aún mas complicado porque \textbf{Windows} usa una variante (CP1252) que no es completamente compatible con Latin-1 y el hecho de que los entornos de \textbf{MATLAB} y \textbf{Octave} no se comportan consistentemente en \textbf{Windows} y sistemas tipo Unix como \textbf{Linux}, en Unix es prácticamente universal la codificación de \textbf{UNICODE}, \textbf{UTF-8}. \textbf{MATLAB} sigue la codificación del sistema operativo, mientras que \textbf{Octave} intenta usar \textbf{UTF-8} siempre, pero en \textbf{Windows} no es completo el soporte. El tema es complicado y no hace al trabajo práctico el lidiar con el mismo, dado que trabajamos mayormente con \textbf{MATLAB}, tanto en \textbf{Windows} como en \textbf{Linux}, y la mayoría usa \textbf{Windows}, se optó por dejar los archivos en \textbf{CP1252}, siendo esta la codificación usual. Se incluyen simplemente por comodidad dos scripts de \textbf{Python}, \textbf{\quotemarks{utf8.py}} y \textbf{\quotemarks{cp1252.py}}, que convierten la codificación de todos los archivos \textbf{\quotemarks{.m}} a las respectivas codificaciones, de esa manera, según el sistema en que se ejecuten los scripts,  se puede lograr una salida con codificación correcta.
+
+
+\clearpage
