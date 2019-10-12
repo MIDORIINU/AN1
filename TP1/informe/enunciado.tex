@@ -27,28 +27,144 @@ El planteo implica asumir ciertas cosas acerca del ascensor, realizando el anál
 \end{wrapfigure}
 %%\end{figure}
 
-En general las normas especifican para la máxima aceleración posible $8 \si[per-mode=symbol]{\meter\per\second\squared}$, la masa de cada persona debe tomarse en promedio como de $75 \si[per-mode=symbol]{\kilogram}$, la masa de la cabina depende del ascensor en cuestión, se tomó un modelo para $12$ personas, con una cabina de masa igual a $450 \si[per-mode=symbol]{\kilogram}$, esto determina la masa máxima de carga en $1350 \si[per-mode=symbol]{\kilogram}$ y la mínima en los $450 \si[per-mode=symbol]{\kilogram}$ de la cabina vacía.
+En general las normas especifican para la máxima aceleración posible $8 \si[per-mode=symbol]{\meter\per\second\squared}$, la masa de cada persona debe tomarse en promedio como de $75 \si[per-mode=symbol]{\kilogram}$, la masa de la cabina depende del ascensor en cuestión, se tomó un modelo para $12$ personas, con una cabina de masa igual a $450 \si[per-mode=symbol]{\kilogram}$, esto determina la masa máxima de carga en $1350 \si[per-mode=symbol]{\kilogram}$ y la mínima en los $450 \si[per-mode=symbol]{\kilogram}$ de la cabina vacía. Se toman $t_{f} = 3 \si[per-mode=symbol]{\second}$ como el máximo tiempo de tránsito entre pisos, caso que se daría a máxima carga, y se toma la altura entre pisos como, $h_{f} = 4 \si[per-mode=symbol]{\meter}$, el cual es un valor posible en ascensores residenciales, dentro de todo un rango posible. \\
+Otras condiciones a tener en cuenta en el planteo, son que se parte de la posición inicial $x_{\left(0\right)} = 0 \si[per-mode=symbol]{\meter}$, se llega a la posición final, $x_{\left( t_{f} \right)} = h_{f}$ y además para la velocidad debe ser, $v_{\left(0\right)} = 0 \si[per-mode=symbol]{\meter\per\second}$ y $v_{\left( t_{f} \right)} = 0 \si[per-mode=symbol]{\meter\per\second}$
 
+\clearpage
+
+De la física del problema se obtienen las expresiones, \eqref{eqn:position}, \eqref{eqn:velocity} y \eqref{eqn:acceleration}, para la posición, velocidad y aceleración, respectivamente.
 
 \begin{equation}
 x_{(t)} = A \cdot t^{3} + B \cdot t^{2} + C \cdot t + D
+\label{eqn:position}
 \end{equation}
 
 \begin{equation}
 v_{(t)} = 3 \cdot A \cdot t^{2} + 2 \cdot B \cdot t + C
+\label{eqn:velocity}
 \end{equation}
 
 \begin{equation}
 a_{(t)} = 6 \cdot A \cdot t + 2 \cdot B \cdot
+\label{eqn:acceleration}
 \end{equation}
 
 
-\clearpage
+Las constantes $A$, $B$, $C$ y $D$ se obtienen de las condiciones y parámetros mencionados anteriormente para el caso de máxima carga, $n_{personas} = 12$, para el caso extremo de mínima carga se asigna la máxima aceleración y se ajusta el tiempo de transito e iterativamente se obtienen las expresiones correspondientes a media carga respetando los parámetros elegidos. Planteando para media carga, se obtiene el siguiente sistema de ecuaciones:
+
+\begin{equation}
+ \begin{cases}
+ 4 = & 27A + 9B\\
+ 0 = & 27A + 6B \\
+ 0 = & C\\
+ 0 = & D 
+ \end{cases} 
+\end{equation}
 
 
-\subsection{Resolución}
+Se obtiene $A = -0.2963 \si[per-mode=symbol]{\meter\per\second\cubed}$ y $B = 1.3333 \si[per-mode=symbol]{\meter\per\second\squared}$, con lo que nos queda:
+
+
+\begin{empheq}[box={\mybluebox[5pt]}]{equation}
+ \begin{cases}
+ {x_{cmax}}_{\left( t \right)} = & -0.2963 \si[per-mode=symbol]{\meter\per\second\cubed} \cdot t^3 + 1.3333 \si[per-mode=symbol]{\meter\per\second\squared} \cdot t^2  \\
+ {v_{cmax}}_{\left( t \right)} = & -0.8889 \si[per-mode=symbol]{\meter\per\second\cubed} \cdot t^2 + 2.6667 \si[per-mode=symbol]{\meter\per\second\squared} \cdot t\\
+ {a_{cmax}}_{\left( t \right)} = & -1.7778 \si[per-mode=symbol]{\meter\per\second\cubed} \cdot t + 2.6667 \si[per-mode=symbol]{\meter\per\second\squared}
+ \end{cases} 
+\end{empheq}
+
+Para el caso de mínima carga, $n_{personas} = 0$ (con la cabina vacía), asumiendo que la fuerza inicial es la misma y que la máxima aceleración debe ser de $8 \si[per-mode=symbol]{\meter\per\second\squared}$, ahora para una masa total de $450 \si[per-mode=symbol]{\kilogram}$, tenemos:
+
+\begin{equation}
+ \begin{cases}
+ 4 = & A \cdot t_{f}^3 + 4 \cdot t_{f}^2 \\
+ 0 = & 3A \cdot t_{f}^2 + 8 \cdot t_{f} \\
+ \end{cases} 
+\end{equation}
+
+
+Se obtiene $A = -1.5396 \si[per-mode=symbol]{\meter\per\second\cubed}$ y $t_{f} = 1.7321 \si[per-mode=symbol]{\second}$, con lo que nos queda:
+
+
+\begin{empheq}[box={\mybluebox[5pt]}]{equation}
+ \begin{cases}
+ {x_{cmin}}_{\left( t \right)} = & -1.5396 \si[per-mode=symbol]{\meter\per\second\cubed} \cdot t^3 + 4 \si[per-mode=symbol]{\meter\per\second\squared} \cdot t^2  \\
+ {v_{cmin}}_{\left( t \right)} = & -4.6188 \si[per-mode=symbol]{\meter\per\second\cubed} \cdot t^2 + 8 \si[per-mode=symbol]{\meter\per\second\squared} \cdot t\\
+ {a_{cmin}}_{\left( t \right)} = & -9.2376 \si[per-mode=symbol]{\meter\per\second\cubed} \cdot t + 8 \si[per-mode=symbol]{\meter\per\second\squared}
+ \end{cases} 
+\end{empheq}
+
+
+Por último para el caso de carga media, $n_{personas} = 6$, nuevamente con la misma fuerza inicial y ahora con una masa total de $900 \si[per-mode=symbol]{\kilogram}$, tenemos:
+
+\begin{equation}
+ \begin{cases}
+ 4 = & A \cdot t_{f}^3 + 2 \cdot t_{f}^2 \\
+ 0 = & 3A \cdot t_{f}^2 + 4 \cdot t_{f} \\
+ \end{cases} 
+\end{equation}
+
+
+Se obtiene $A = -0.5443 \si[per-mode=symbol]{\meter\per\second\cubed}$ y $t_{f} = 2.4495 \si[per-mode=symbol]{\second}$, con lo que nos queda:
+
+
+\begin{empheq}[box={\mybluebox[5pt]}]{equation}
+ \begin{cases}
+ {x_{cmin}}_{\left( t \right)} = & -0.5443 \si[per-mode=symbol]{\meter\per\second\cubed} \cdot t^3 + 2 \si[per-mode=symbol]{\meter\per\second\squared} \cdot t^2  \\
+ {v_{cmin}}_{\left( t \right)} = & -1.6329 \si[per-mode=symbol]{\meter\per\second\cubed} \cdot t^2 + 4 \si[per-mode=symbol]{\meter\per\second\squared} \cdot t\\
+ {a_{cmin}}_{\left( t \right)} = & -3.2658 \si[per-mode=symbol]{\meter\per\second\cubed} \cdot t + 4 \si[per-mode=symbol]{\meter\per\second\squared}
+ \end{cases} 
+\end{empheq}
+
+
+
+\subsection{Dimensionamiento de los frenos del ascensor}
+
+
+
+
+
+
+
+
+\subsection{Resolución del problema numérico}
 
 Para la resolución de la parte de programación del trabajo práctico e implementar los algoritmos pedidos, decidimos usar \textbf{MATLAB}, mayormente por conocerlo previamente y la sencillez con la que se pueden escribir scripts que implementen los algoritmos. A pesar de que la resolución se realizó en \textbf{MATLAB}, se prestó atención a la compatibilidad con \textbf{Octave}, ya que la compatibilidad en los paquetes básicos es alta y con un poco de cuidado y algo de programación condicional se puede lograr que los scripts funcionen en ambos entornos.
-Todas las salidas numéricas se guardaron en archivos que luego fueron leídas en \LaTeX\space usando paquetes para el proceso de archivos en formato \textbf{\quotemarks{CSV}}, los mismos permiten redondeo, presentación y hasta algunas operaciones sobre los datos, lo cual facilita el escribir el informe de tal manera de que no deba modificarse al modificar los datos, basta con compilar nuevamente. Las imágenes en forma similar, se guardaron por código desde \textbf{MATLAB} en formato \textbf{\quotemarks{PNG}} y luego se incorporaron desde \LaTeX. Algo a mencionar es que se estimaron lo valores del orden de convergencia y la constante asintótica, para cada uno de los método numéricos implementados, para lograr una buena precisión en las estimaciones se agregó una tolerancia mas a las ya pedidas en el trabajo práctico.
+Todas las salidas numéricas se guardaron en archivos que luego fueron leídas en \LaTeX\space usando paquetes para el proceso de archivos en formato \textbf{\quotemarks{CSV}}, los mismos permiten redondeo, presentación y hasta algunas operaciones sobre los datos, lo cual facilita el escribir el informe de tal manera de que no deba modificarse al modificar los datos, basta con compilar nuevamente. Las imágenes en forma similar, se guardaron por código desde \textbf{MATLAB} en formato \textbf{\quotemarks{PNG}} y luego se incorporaron desde \LaTeX. Algo a mencionar es que se estimaron lo valores del orden de convergencia y la constante asintótica, para cada uno de el método numérico implementado.
 
+
+
+
+
+\section{Gráficos de las funciones obtenidas para media carga}
+
+A continuación se muestran las gráficas de las funciones de posición, velocidad y aceleración para media carga, $n_{personas} = 6$.
+
+
+\begin{figure}[!h] %htb
+\begin{center}
+\includegraphics[width= \linewidth, keepaspectratio=true, angle=90]{img/grafico_funcion_x.png} %% , angle=90 trim={<left> <lower> <right> <upper>}
+\caption{\label{fig:fig_position_n_2} \footnotesize{Posición en función del tiempo a media carga.}}
+\end{center}
+\end{figure}
+
+\clearpage
+
+\begin{figure}[!h] %htb
+\begin{center}
+\includegraphics[width= \linewidth, keepaspectratio=true, angle=90]{img/grafico_funcion_v.png} %% , angle=90 trim={<left> <lower> <right> <upper>}
+\caption{\label{fig:fig_position_n_2} \footnotesize{Valocidad en función del tiempo a media carga.}}
+\end{center}
+\end{figure}
+
+\clearpage
+
+\begin{figure}[!h] %htb
+\begin{center}
+\includegraphics[width= \linewidth, keepaspectratio=true, angle=90]{img/grafico_funcion_a.png} %% , angle=90 trim={<left> <lower> <right> <upper>}
+\caption{\label{fig:fig_position_n_2} \footnotesize{Aceleración en función del tiempo a media carga.}}
+\end{center}
+\end{figure}
+
+\clearpage
 

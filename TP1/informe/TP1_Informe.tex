@@ -63,6 +63,7 @@
 
 
 \usepackage{amsmath}
+\usepackage{empheq}
 \usepackage{mathrsfs}
 
 
@@ -243,6 +244,37 @@
   {\colorbox{#1}{$\textstyle#2$}}%
   {\colorbox{#1}{$\scriptstyle#2$}}%
   {\colorbox{#1}{$\scriptscriptstyle#2$}}}%
+  
+  
+ 
+\newlength\mytemplen
+\newsavebox\mytempbox
+
+\makeatletter
+\newcommand\mybluebox{%
+    \@ifnextchar[%]
+       {\@mybluebox}%
+       {\@mybluebox[0pt]}}
+
+\def\@mybluebox[#1]{%
+    \@ifnextchar[%]
+       {\@@mybluebox[#1]}%
+       {\@@mybluebox[#1][0pt]}}
+
+\def\@@mybluebox[#1][#2]#3{
+    \sbox\mytempbox{#3}%
+    \mytemplen\ht\mytempbox
+    \advance\mytemplen #1\relax
+    \ht\mytempbox\mytemplen
+    \mytemplen\dp\mytempbox
+    \advance\mytemplen #2\relax
+    \dp\mytempbox\mytemplen
+    \colorbox{myblue}{\hspace{1em}\usebox{\mytempbox}\hspace{1em}}}
+
+\makeatother 
+   
+  
+  
 %\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 
@@ -462,7 +494,7 @@
 \definecolor{CITELINKColor}{RGB}{141,199,126}
 \definecolor{TABLELINKColor}{RGB}{199,199,0}
 
-
+\definecolor{myblue}{rgb}{.8, .8, 1}
 
 
 
@@ -528,6 +560,14 @@
 % FOR SECTION REFERENCE
 
 \newcommand{\sectref}[1]{\textcolor{SECTLINKColor}{\ref{#1}}}
+
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+% FOR EQUATION REFERENCE
+
+%\newcommand{\eqref}[1]{\textcolor{EQColor}{\ref{#1}}}
 
 %\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
