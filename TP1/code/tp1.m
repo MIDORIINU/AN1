@@ -72,9 +72,9 @@ if (exist(output_file, 'file'))
 end
 
 % Borro el archivo si existía previamente.
-% if (exist('diary', 'file'))
-%     delete('diary');
-% end
+if (exist('diary', 'file'))
+    delete('diary');
+end
 
 % Inicio la captura de la salida.
 diary on;
@@ -177,9 +177,9 @@ if (~Is_Octave) % Si estoy trabajando en MATLAB.
     
     if (~license('test', 'symbolic_toolbox'))
         fprintf(strjoin({'\nNo se encontró', ...
-            'el toolbox simbólico, necesario para la derivada', ...
-            'simbólica en el método de Newton-Raphson,', ...
-            'no se puede continuar.\n\n'}));
+            ' el toolbox simbólico, necesario para la derivada', ...
+            ' simbólica en el método de Newton-Raphson,', ...
+            ' no se puede continuar.\n\n'}, ''));
         
         return;
     end %if
@@ -201,11 +201,11 @@ else            % Si estoy trabajando en Octave.
     
     if (~loaded)
         fprintf(strjoin({'\nNo se encontró', ...
-            'el paquete simbólico, necesario para la derivada', ...
-            'simbólica en el método de Newton-Raphson,', ...
-            'no se puede continuar.\n', ...
-            'Se puede instalar desde Octave forge con:\n', ...
-            '"pkg install -forge symbolic".\n\n'}));
+            ' el paquete simbólico, necesario para la derivada', ...
+            ' simbólica en el método de Newton-Raphson,', ...
+            ' no se puede continuar.\n', ...
+            ' Se puede instalar desde Octave forge con:\n', ...
+            ' "pkg install -forge symbolic".\n\n'}, ''));
         
         return;
     end %if
@@ -225,7 +225,7 @@ success = (7 == exist(images_directory, 'dir'));
 % Chequeo que el directorio para las imágenes exista.
 if (~success)
     fprintf(strjoin({'\nNo se pudo crear', ...
-        'el directorio para las imágenes.\n\n'}));
+        ' el directorio para las imágenes.\n\n'}, ''));
     
     exit;
 else
@@ -241,7 +241,7 @@ success = (7 == exist(results_directory, 'dir'));
 % Chequeo que el directorio para los archivos numéricos exista.
 if (~success)
     fprintf(strjoin({'\nNo se pudo crear', ...
-        'el directorio para los resultados.\n\n'}));
+        ' el directorio para los resultados.\n\n'}, ''));
     
     exit;
 else
@@ -398,8 +398,8 @@ for ii = 1:3
     
     % Busco la raíz por el método de bisección.
     fprintf(strjoin({'Ejecutando el método de bisección'...
-        'para f{', num2str(ii),'}, como arranque,', ...
-        ' para la tolerancia %.1e...'}), 0.1);
+        ' para f{', num2str(ii),'}, como arranque,', ...
+        ' para la tolerancia %.1e...'}, ''), 0.1);
     
     fprintf('Listo\n\n');
     
@@ -408,7 +408,7 @@ for ii = 1:3
     
     
     fprintf(strjoin({'La semilla a usar para la búsqueda', ...
-        'de la raíz es: %.5f\n\n'}), seed);
+        ' de la raíz es: %.5f\n\n'}, ''), seed);
     
     seeds_table = [ai(ii), bi(ii), seed];
     
@@ -425,7 +425,7 @@ for ii = 1:3
     
     % Busco la raíz por el método de Newton-Raphson.
     fprintf(strjoin({'Ejecutando el método de Newton-Raphson'...
-        'para f{', num2str(ii), ...
+        ' para f{', num2str(ii), ...
         '} y para la tolerancia %.1e...'}, ''), tol);
     
     % Ejecuto el método.
@@ -437,7 +437,7 @@ for ii = 1:3
     % de las máximas iteraciones.
     if (~success)
         fprintf(strjoin({'\nFalló el método de Newton-Raphson', ...
-            'para la función f{%d}.\n\n'}), ii);
+            ' para la función f{%d}.\n\n'}, ''), ii);
         
         return;
     else
@@ -500,7 +500,7 @@ for ii = 1:3
     
     % Muestro el valor estimado.
     fprintf(strjoin({'El orden de convergencia estimado', ...
-        'para el método de Newton-Raphson es %.8f.\n\n'}), order);
+        ' para el método de Newton-Raphson es %.8f.\n\n'}, ''), order);
     
     % Armo el array con los valores a guardar.
     conv_results = ...
@@ -509,7 +509,7 @@ for ii = 1:3
     
     % Guardo los resultados de la estimación en un archivo.
     fprintf(strjoin({'Salvando los resultados de la estimación', ...
-        'del orden de convergencia en un archivo "CSV"......'}));
+        ' del orden de convergencia en un archivo "CSV"......'}, ''));
     
     % Guardo los valores de las estimaciones.
     dlmwrite(newton_convergence_complete_name, ...
@@ -536,7 +536,7 @@ disp(v{4});
 
 % Busco la raíz por el método de bisección.
 fprintf(strjoin({'Ejecutando el método de bisección'...
-    'para v{4}, como arranque,', ...
+    ' para v{4}, como arranque,', ...
     ' para la tolerancia %.1e...'}, ''), 0.3);
 
 fprintf('Listo\n\n');
@@ -546,7 +546,7 @@ fprintf('Listo\n\n');
 
 
 fprintf(strjoin({'La semilla a usar para la búsqueda', ...
-    'de la raíz es: %.5f\n\n'}), seed);
+    ' de la raíz es: %.5f\n\n'}, ''), seed);
 
 seeds_table = [0, 2, seed];
 
@@ -563,7 +563,7 @@ fprintf('Listo\n\n');
 
 % Busco la raíz por el método de Newton-Raphson.
 fprintf(strjoin({'Ejecutando el método de Newton-Raphson'...
-    'para v{4} y para la tolerancia %.1e...'}), tol);
+    ' para v{4} y para la tolerancia %.1e...'}, ''), tol);
 
 % Ejecuto el método.
 [r0, delta, erel, ...
@@ -574,7 +574,7 @@ fprintf(strjoin({'Ejecutando el método de Newton-Raphson'...
 % de las máximas iteraciones.
 if (~success)
     fprintf(strjoin({'\nFalló el método de Newton-Raphson', ...
-        'para la función v{4}.\n\n'}));
+        ' para la función v{4}.\n\n'}, ''));
     
     return;
 else
@@ -637,7 +637,7 @@ fprintf('Listo\n\n');
 
 % Muestro el valor estimado.
 fprintf(strjoin({'El orden de convergencia estimado', ...
-    'para el método de Newton-Raphson es %.8f.\n\n'}), order);
+    ' para el método de Newton-Raphson es %.8f.\n\n'}, ''), order);
 
 % Armo el array con los valores a guardar.
 conv_results = ...
@@ -646,7 +646,7 @@ conv_results = ...
 
 % Guardo los resultados de la estimación en un archivo.
 fprintf(strjoin({'Salvando los resultados de la estimación', ...
-    'del orden de convergencia en un archivo "CSV"......'}));
+    ' del orden de convergencia en un archivo "CSV"......'}, ''));
 
 % Guardo los valores de las estimaciones.
 dlmwrite(newton_convergence_complete_name, ...
@@ -676,7 +676,7 @@ fprintf('Copiando el archivo de salida......');
 % Chequeo que la copia se realizó correctamente.
 if (~status)
     fprintf(strjoin({'\nFalló la copia', ...
-        'del archivo de salida.\n\n'}));
+        ' del archivo de salida.\n\n'}, ''));
     
     return;
 else %if
