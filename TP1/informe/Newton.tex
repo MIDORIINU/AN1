@@ -1,10 +1,19 @@
 
-Para aproximar el valor de la raíz de $f(t)$ se plantea el método iterativo con la función:
+\subsection{Funciones a las que aplicarle el método numérico para hallar las raíces}
+
+
+Una ves obtenidas las funciones del movimiento para los tres casos de carga del ascensor, se halla el tiempo en que se alcanza el 30\% de la aceleración positiva,a partir de la función de la aceleración, que es lineal, y el valor se despeja trivialmente, para luego calcular la posición del ascensor para este tiempo. Con el valor obtenido armamos una nueva función restándolo de la función posición, de modo que ese valor de tiempo sea raíz de la nueva función, de esta forma tenemos tres funciones a las cuales aplicarle el método de Newton-Raphson, y ver que se obtiene el valor esperado.\\
+La cuarta función a la cuál le aplicaremos el método es la función velocidad para el movimiento del ascensor en el caso de frenado de emergencia, en este caso simplemente se lo aplicamos a la función velocidad para encontrar el tiempo en que el mismo se detiene, corroborando el valor del diseño de los frenos.
+
+
+
+
+Para aproximar el valor de la raíz de $f(t)$ para cada una de las $4$ funciones se plantea el método iterativo con la función:
 
 
 \[g_{(t)} = t - \frac{{f(t)}}{{f'(t)}}\]
 
-\subsection{ Demostración de la convergencia de la iteración a la raíz de $f(x)$}
+\subsection{Demostración de la convergencia de la iteración a la raíz de $f(x)$}
 
 Para ver que el método de Newton-Raphson converge a la raíz del polinomio, dado que se elige una aproximación inicial lo suficientemente cercana, basta ver que se cumplan las hipótesis del teorema correspondiente, esto es, que la función sea derivable, esto es $f(t) \in {\rm{ }}\mathscr{C}^{2}$ y que la función derivada no se anule en la raíz, pero dado que nuestra función es un polinomio, se tiene que:
 
@@ -17,7 +26,10 @@ Por lo tanto la función es derivable, además se comprueba que su derivada no t
 
 \clearpage
 
-\subsection{ Orden de convergencia para el método de Newton-Raphson }
+\subsection{Orden de convergencia para el método de Newton-Raphson }
+
+En esta sección se calcula con los datos de la tabla de las iteraciones de una de las funciones el orden de convergencia y la constante asintótica, en el código este cálculo se realiza para todas las funciones.
+
 
 \DTLloaddb[noheader]{extraresultsnrdb}{results/newton_fun_1.csv}
 \DTLloaddb[noheader]{convergenceresultsnrdb}{results/newton_convergence_results.csv}
