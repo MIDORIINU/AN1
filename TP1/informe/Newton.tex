@@ -1,0 +1,217 @@
+
+Para aproximar el valor de la raíz de $f(t)$ se plantea el método iterativo con la función:
+
+
+\[g_{(t)} = t - \frac{{f(t)}}{{f'(t)}}\]
+
+\subsection{ Demostración de la convergencia de la iteración a la raíz de $f(x)$}
+
+Para ver que el método de Newton-Raphson converge a la raíz del polinomio, dado que se elige una aproximación inicial lo suficientemente cercana, basta ver que se cumplan las hipótesis del teorema correspondiente, esto es, que la función sea derivable, esto es $f(t) \in {\rm{ }}\mathscr{C}^{2}$ y que la función derivada no se anule en la raíz, pero dado que nuestra función es un polinomio, se tiene que:
+
+\[
+f(t) \in {\rm{ }}\mathscr{C}^{\infty} \Rightarrow f(t) \in {\rm{ }}\mathscr{C}^{2}
+\]
+
+Por lo tanto la función es derivable, además se comprueba que su derivada no tiene raíces reales, por lo que nunca se anula para $t \in \mathbb{R}$, por lo tanto no se anula en particular para el intervalo de interés, $[0, t_{f}]$. Tenemos entonces que se cumplen las hipótesis del teorema, con lo que se puede garantizar que de elegir una aproximación inicial lo suficientemente cercana, el método convergerá a la raíz de $f(t)$, en la práctica simplemente se arranca el método de algún punto en el intervalo que contiene a la raíz y si no convergiese, bastaría con hacer algunos pasos de bisección para acercarse mas a la raíz buscada.
+
+
+\clearpage
+
+\subsection{ Orden de convergencia para el método de Newton-Raphson }
+
+\DTLloaddb[noheader]{extraresultsnrdb}{results/newton_fun_1.csv}
+\DTLloaddb[noheader]{convergenceresultsnrdb}{results/newton_convergence_results.csv}
+
+\edef\iterationscount{\DTLrowcount{extraresultsnrdb}}
+
+\edef\iterl{\iterationscount}
+\edef\iterlp{\intcalcDec{\iterl}}
+\edef\iterlpp{\intcalcDec{\iterlp}}
+\edef\iterlppp{\intcalcDec{\iterlpp}}
+
+\DTLassign{convergenceresultsnrdb}{1}{\orderconvergnr=Column1}
+\DTLassign{convergenceresultsnrdb}{1}{\asintconstnr=Column2}
+\DTLassign{convergenceresultsnrdb}{1}{\asintconstnrderiv=Column3}
+\DTLassign{convergenceresultsnrdb}{1}{\intermd1=Column4}
+\DTLassign{convergenceresultsnrdb}{1}{\intermd2=Column5}
+\DTLassign{convergenceresultsnrdb}{1}{\intermd3=Column6}
+\DTLassign{convergenceresultsnrdb}{1}{\intermd4=Column7}
+\DTLassign{convergenceresultsnrdb}{1}{\intermd5=Column8}
+\DTLassign{convergenceresultsnrdb}{1}{\intermd6=Column9}
+
+\DTLround{\orderconvergnrrounded}{\orderconvergnr}{3}
+\DTLround{\asintconstnrrounded}{\asintconstnr}{3}
+\DTLround{\asintconstnrderivrounded}{\asintconstnrderiv}{3}
+
+
+\DTLloaddb[noheader]{finalresultsnrdb}{results/newton_final_results.csv}
+
+\DTLassign{finalresultsnrdb}{\DTLrowcount{finalresultsnrdb}}{\val=Column2, \dig=Column4}
+
+\DTLtrunc{\figurescount}{\dig}{0}
+
+\edef\theval{\num[round-precision=\figurescount, round-mode=places, group-digits=false]{\val}}
+
+
+{
+\setlength{\parindent}{0pt}
+$\alpha$ : orden de convergencia\\
+$\lambda$ : constante asintótica\\
+}\\
+
+Utilizamos las 4 últimas iteraciones extraídas de la tabla~\tableref{table:table_fun_1} para calcular aproximadamente el orden de convergencia y la constante asintótica:
+
+
+\begin{equation}\label{eq:C.7}
+{\rm{    }}\frac{{\left| {{p_{\iterl}} - p} \right|}}{{{{\left| {{p_{\iterlp}} - p} \right|}^\alpha }}} \cong \frac{{\left| {{p_{\iterl}} - {p_{\iterlp}}} \right|}}{{{{\left| {{p_{\iterlp}} - {p_{\iterlpp}}} \right|}^\alpha }}} \cong \lambda \\\\
+\end{equation}
+
+\begin{equation}\label{eq:C.8}
+{\rm{    }}\frac{{\left| {{p_{\iterlp}} - p} \right|}}{{{{\left| {{p_{\iterlpp}} - p} \right|}^\alpha }}} \cong \frac{{\left| {{p_{\iterlp}} - {p_{\iterlpp}}} \right|}}{{{{\left| {{p_{\iterlpp}} - {p_{\iterlppp}}} \right|}^\alpha }}} \cong \lambda 
+\end{equation} \\
+
+
+Igualando las ecuaciones~\eqref{eq:C.7} y~\eqref{eq:C.8}
+
+\[\begin{array}{l}
+
+\frac{{\left| {{p_{\iterlp}} - {p_{\iterlpp}}} \right|}}{{{{\left| {{p_{\iterlpp}} - {p_{\iterlppp}}} \right|}^\alpha }}} \cong \frac{{\left| {{p_{\iterl}} - {p_{\iterlp}}} \right|}}{{{{\left| {{p_{\iterlp}} - {p_{\iterlpp}}} \right|}^\alpha }}}{\rm{  }} \Rightarrow {\rm{  }}{\left( {\frac{{\left| {{p_{\iterlp}} - {p_{\iterlpp}}} \right|}}{{\left| {{p_{\iterlpp}} - {p_{\iterlppp}}} \right|}}} \right)^\alpha } \cong \frac{{\left| {{p_{\iterl}} - {p_{\iterlp}}} \right|}}{{\left| {{p_{\iterlp}} - {p_{\iterlpp}}} \right|}}{\rm{  }} \Rightarrow {\rm{  }}\alpha {\rm{ }}\ln \left( {\frac{{\left| {{p_{\iterlp}} - {p_{\iterlpp}}} \right|}}{{\left| {{p_{\iterlpp}} - {p_{\iterlppp}}} \right|}}} \right) \cong \ln \left( {\frac{{\left| {{p_{\iterl}} - {p_{\iterlp}}} \right|}}{{\left| {{p_{\iterlp}} - {p_{\iterlpp}}} \right|}}} \right)   {\rm{  }} \Rightarrow {\rm{  }} \\\\
+
+
+
+ \Rightarrow \alpha {\rm{ }} \cong \frac{{\ln \left( {\frac{{\left| {{p_{\iterl}} - {p_{\iterlp}}} \right|}}{{\left| {{p_{\iterlp}} - {p_{\iterlpp}}} \right|}}} \right)}}{{\ln \left( {\frac{{\left| {{p_{\iterlp}} - {p_{\iterlpp}}} \right|}}{{\left| {{p_{\iterlpp}} - {p_{\iterlppp}}} \right|}}} \right)}}{\rm{     }} \Rightarrow {\rm{   }}\alpha  \cong \frac{{\ln \left( {\frac{{\intermd1}}{{\intermd2}}} \right)}}{{\ln \left( {\frac{{\intermd2}}{{\intermd3}}} \right)}}{\rm{ }} \cong \frac{{ \intermd4}}{{ \intermd5}} = \orderconvergnr \cong \orderconvergnrrounded \\
+ \Rightarrow \alpha  \cong \orderconvergnrrounded
+ 
+\end{array}\]
+
+
+Experimentalmente verificamos que el método de Newton-Raphson tiene orden de convergencia igual a \orderconvergnrrounded. Reemplazamos en la ecuación~\eqref{eq:C.7} el valor de $\alpha$ calculado y determinamos el valor de la constante asintótica~$\lambda$:
+
+
+\[\lambda  \cong \frac{{\left| {{p_{\iterl}} - {p_{\iterlp}}} \right|}}{{{{\left| {{p_{\iterlp}} - {p_{\iterlpp}}} \right|}^\alpha }}} \cong {\rm{ }}\frac{{\intermd1}}{{\intermd6}} \cong \asintconstnr{\rm{  }} \Rightarrow {\rm{  }}\lambda \cong \asintconstnrrounded{\rm{ }}\]\\
+
+
+
+\clearpage
+
+\subsection{Iteración de Newton-Raphson}
+
+\begin{equation}\label{eq:C.9}
+\left\{ \begin{array}{l}
+{\rm{ }}{p_{(n)}} = p_{(n - 1)} - \frac{f(p_{(n - 1)})}{f'(p_{(n - 1)})}\\
+{p_{(0)}} = seed
+\end{array} \right.
+\end{equation}\\
+
+Con $f_{(t)} = x_{(t)} - x_{\left(t_{a_{30\%}} \right)}$\\
+
+La expresión~\eqref{eq:C.9} representa el algoritmo implementado en \textbf{MATLAB} con el cual se obtuvo las tablas de la sección~\sectref{section:sect_nr_outputs}.
+
+
+
+
+\subsection{Salidas del algoritmo de Newton-Raphson para las funciones pedidas}
+
+\label{section:sect_nr_outputs}
+
+\newcounter{tolnumbernr}
+\forloop{tolnumbernr}{1}{\value{tolnumbernr} < 5}{ %FOR LOOP.
+
+\DTLassign{finalresultsnrdb}{\arabic{tolnumbernr}}{\val=Column2, \tol=Column3, \dig=Column4, \iters=Column7}
+
+\DTLtrunc{\figurescount}{\dig}{0}
+
+\DTLtrunc{\iterations}{\iters}{0}
+
+\edef\thetol{\num[round-precision=1,round-mode=figures, scientific-notation=true, group-digits=false]{\tol}}
+
+\edef\theval{\num[round-precision=\figurescount,round-mode=places, group-digits=false]{\val}}
+
+
+%\begin{table}[h!]
+\begin{center}
+
+\pgfplotstableset{
+begin table=\begin{longtable},
+end table=\end{longtable},
+}
+
+\pgfplotstabletypeset[
+    col sep=comma,
+    multicolumn names,    
+%%		
+    every head row/.style={before row={\toprule \rowcolor{Lightgreen} \multicolumn{4}{c}{Tolerancia pedida: \thetol} \\ \toprule}, 
+    after row={\toprule\toprule}},
+%%		
+    every last row/.style={before row={\rowcolor{LightOrange}}, after row={\bottomrule \caption{\label{table:table_fun_\arabic{tolnumbernr}}
+    \footnotesize{Tabla de salida para el algoritmo de Newton-Raphson para la \arabic{tolnumbernr}\textsuperscript{º} función.}}}},		
+%%		
+    every row/.style={after row=\hline},
+%%		
+    every even row/.style={before row={\rowcolor{Lightblue2}}},  
+%%		
+    columns/0/.style={
+		column name={Iteración},
+		string type,
+		column type={S[round-precision=0, round-mode=places, scientific-notation=false, group-digits=false, table-align-text-pre=true, detect-mode,
+        tight-spacing=true]}},
+%%		
+    columns/1/.style={
+		column name={Valor},
+		string type,
+		column type={S[round-precision=15, round-mode=places, scientific-notation=false, group-digits=false, table-align-text-pre=true, detect-mode,
+        tight-spacing=true]}},
+%%		
+    columns/2/.style={
+		column name={Delta},
+		string type,
+		column type={S[round-precision=15, round-mode=places, scientific-notation=false, group-digits=false, table-align-text-pre=true, detect-mode,
+        tight-spacing=true]}},
+%%		
+    columns/3/.style={
+		column name={Error relativo (\%)},
+		string type,
+		column type={S[round-precision=3, round-mode=figures, scientific-notation=true, group-digits=false, table-align-text-pre=true, detect-mode,
+        tight-spacing=true]}}
+%%		
+    ]{results/newton_fun_\arabic{tolnumbernr}.csv}
+    
+\end{center}    
+
+
+Resultado final para la solución, con una tolerancia de \thetol, hallada después de \iterations \space iteraciones:
+
+\[
+ \highlight{LightOrange}{p = \theval \pm \thetol}
+\]
+
+
+\clearpage
+
+}  %FOR LOOP.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

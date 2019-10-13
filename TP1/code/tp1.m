@@ -139,7 +139,7 @@ results_directory = fullfile('..', 'informe', 'results');
 
 % Declaro los nombres de los archivos a guardar.
 seeds = 'seeds';
-newton_prefix = 'newton_tol_';
+newton_prefix = 'newton_fun_';
 newton_results_name = 'newton_final_results';
 newton_convergence_name = 'newton_convergence_results';
 grafico_x = 'grafico_funcion_x.png';
@@ -600,7 +600,7 @@ fprintf('Salvando los resultados en un archivo "CSV"......');
 
 % Guardo la tabla de las iteraciones.
 dlmwrite(fullfile(results_directory, ...
-    strjoin({newton_prefix, int2str(ii), '.csv'}, '')),  ...
+    strjoin({newton_prefix, int2str(4), '.csv'}, '')),  ...
     table, 'precision','%.15f');
 
 % Armo la tabla de resultados finales con:
@@ -628,7 +628,7 @@ fprintf('Estimando el orden de convergencia......');
 % Invoco al cálculo.
 [order, asintconst, ~, asintconstder, interm1, interm2, ...
     interm3, interm4, interm5, interm6] = ...
-    estimate_order(f{ii}, table(iter_req -3, 2), ...
+    estimate_order(v{4}, table(iter_req -3, 2), ...
     table(iter_req - 2, 2), ...
     table(iter_req - 1, 2), table(iter_req, 2));
 

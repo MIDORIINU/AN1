@@ -3,7 +3,7 @@
 % 4 aproximaciones encontradas.
 % Se devuelven también los valores intermedios de los cálculos.
 %
-% Parámetros: 
+% Parámetros:
 % f:               Puntero a la función a la que se aplicó el método.
 % val1-val4:       Cuatro últimas aproximaciones del método.
 %
@@ -18,10 +18,10 @@
 function [order, asintconst, asintconstder, asintconstder2, ...
     interm1, interm2, interm3, ...
     interm4, interm5, interm6] = estimate_order(f, val1, val2, val3, val4)
-        
+
 % Calcula:
 %
-% order = 
+% order =
 % log(abs(val4 - val3/val3 - val2))/log(abs(val3 - val2/val2 - val1))
 %
 % asintconst =
@@ -53,18 +53,28 @@ func = f(x);                     % Defino func como la función puntero a f.
 der_func = diff(func);           % Derivada simbólica respecto de x
 der2_func = diff(der_func);      % Derivada 2da simbólica respecto de x
 
+
+
 f_deriv = ...
-     matlabFunction(der_func);   % Convierto la función derivada simbólica 
-                                 % en una función normal de MATLAB/Octave.
+    matlabFunction(der_func);   % Convierto la función derivada simbólica
+% en una función normal de MATLAB/Octave.
 
 f_deriv2 = ...
-     matlabFunction(der2_func);  % Convierto la función derivada 2da 
-                                 % simbólica en una función normal de 
-                                 % MATLAB/Octave.                                
-                                 
+    matlabFunction(...
+    der2_func, 'vars', x);     % Convierto la función derivada 2da
+% simbólica en una función normal de
+% MATLAB/Octave.
+
+if isempty(symvar(der2_func))
+    valaux = f_deriv2();
+else
+    valaux = f_deriv2(val4);
+end
+
+
 asintconstder = abs(f_deriv(val4));
 
-asintconstder2 = f_deriv2(val4)/(2*f_deriv(val4));
+asintconstder2 = valaux/(2*f_deriv(val4));
 
 end %function
 
