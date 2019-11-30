@@ -1,13 +1,13 @@
 Inicializando las variables globales para el TP1...Listo
 
-Trabajando en: MATLAB 9.7.0.1190202 (R2019b) sobre Windows.
+Trabajando en: MATLAB 9.7.0.1190202 (R2019b) sobre Linux.
 
-Creando el directorio para las imágenes...Listo
+Creando el directorio para las imï¿½genes...Listo
 
-Creando el directorio para los resultados numéricos...Listo
+Creando el directorio para los resultados numï¿½ricos...Listo
 
 
-Las funciones para la posición, velocidad y aceleración a media carga (n/2 = 6), son respectivamente:
+Las funciones para la posiciï¿½n, velocidad y aceleraciï¿½n a media carga (n/2 = 6), son respectivamente:
 
     @(t)-0.5443*t.^3+2.*t.^2
 
@@ -20,13 +20,13 @@ Las funciones para la posición, velocidad y aceleración a media carga (n/2 = 6),
 Las unidades para estas funciones son m, m/s y m/s^2, respectivamente.
 
 
-Generando un gráfico de cada función en el intervalo [0.00000, 2.44950] para ver su forma general...
+Generando un grï¿½fico de cada funciï¿½n en el intervalo [0.00000, 2.44950] para ver su forma general...
 
-Salvando el gráfico de la posición en un archivo "PNG"......Listo
+Salvando el grï¿½fico de la posiciï¿½n en un archivo "PNG"......Listo
 
-Salvando el gráfico de la velocidad en un archivo "PNG"......Listo
+Salvando el grï¿½fico de la velocidad en un archivo "PNG"......Listo
 
-Salvando el gráfico de la aceleración en un archivo "PNG"......Listo
+Salvando el grï¿½fico de la aceleraciï¿½n en un archivo "PNG"......Listo
 
 Listo
 
@@ -34,128 +34,128 @@ Listo
 
 
 
-Ejecutando los métodos numéricos...
+Ejecutando los mï¿½todos numï¿½ricos...
 
 
 ****************************
 Calculando para Media carga (6 personas):
 
-Hallamos el valor de tiempo en el cual se alcanza el 30% de la aceleración positiva. 
-Por tratarse de una función lineal el valor se halla trivialmente:
+Hallamos el valor de tiempo en el cual se alcanza el 30% de la aceleraciï¿½n positiva. 
+Por tratarse de una funciï¿½n lineal el valor se halla trivialmente:
 
-El 30% de la aceleración se alcanza en t_acel_30_percent = 0.8573703227.
+El 30% de la aceleraciï¿½n se alcanza en t_acel_30_percent = 0.8573703227.
 
-Hallamos el valor de posición en el tiempo hallado anteriormente. 
-Con este valor construimos la función (f{1}) a la cuál le hallaremos la raíz por Newton-Raphson:
+Hallamos el valor de posiciï¿½n en el tiempo hallado anteriormente. 
+Con este valor construimos la funciï¿½n (f{1}) a la cuï¿½l le hallaremos la raï¿½z por Newton-Raphson:
 
     @(t)x{ii}(t)-x{ii}(t_acel_30_percent(ii))
 
-Ejecutando el método de bisección para f{1}, como arranque, para la tolerancia 1.0e-01...Listo
+Ejecutando el mï¿½todo de bisecciï¿½n para f{1}, como arranque, para la tolerancia 1.0e-01...Listo
 
-La semilla a usar para la búsqueda de la raíz es: 0.91856
+La semilla a usar para la bï¿½squeda de la raï¿½z es: 0.91856
 
 Salvando las semillas en un archivo "CSV"......Listo
 
-Ejecutando el método de Newton-Raphson para f{1} y para la tolerancia 1.0e-10...Listo
+Ejecutando el mï¿½todo de Newton-Raphson para f{1} y para la tolerancia 1.0e-10...Listo
 
-Raíz hallada después de 4 iteraciones: 0.8573703227 +- 1.0e-10
+Raï¿½z hallada despuï¿½s de 4 iteraciones: 0.8573703227 +- 1.0e-10
 
 Salvando los resultados en un archivo "CSV"......Listo
 
 Estimando el orden de convergencia......Listo
 
-El orden de convergencia estimado para el método de Newton-Raphson es 1.99990052.
+El orden de convergencia estimado para el mï¿½todo de Newton-Raphson es 1.99990052.
 
-Salvando los resultados de la estimación del orden de convergencia en un archivo "CSV"......Listo
+Salvando los resultados de la estimaciï¿½n del orden de convergencia en un archivo "CSV"......Listo
 
 ****************************
-Calculando para Máxima carga (12 personas):
+Calculando para Mï¿½xima carga (12 personas):
 
-Hallamos el valor de tiempo en el cual se alcanza el 30% de la aceleración positiva. 
-Por tratarse de una función lineal el valor se halla trivialmente:
+Hallamos el valor de tiempo en el cual se alcanza el 30% de la aceleraciï¿½n positiva. 
+Por tratarse de una funciï¿½n lineal el valor se halla trivialmente:
 
-El 30% de la aceleración se alcanza en t_acel_30_percent = 1.0500000000.
+El 30% de la aceleraciï¿½n se alcanza en t_acel_30_percent = 1.0500000000.
 
-Hallamos el valor de posición en el tiempo hallado anteriormente. 
-Con este valor construimos la función (f{2}) a la cuál le hallaremos la raíz por Newton-Raphson:
+Hallamos el valor de posiciï¿½n en el tiempo hallado anteriormente. 
+Con este valor construimos la funciï¿½n (f{2}) a la cuï¿½l le hallaremos la raï¿½z por Newton-Raphson:
 
     @(t)x{ii}(t)-x{ii}(t_acel_30_percent(ii))
 
-Ejecutando el método de bisección para f{2}, como arranque, para la tolerancia 1.0e-01...Listo
+Ejecutando el mï¿½todo de bisecciï¿½n para f{2}, como arranque, para la tolerancia 1.0e-01...Listo
 
-La semilla a usar para la búsqueda de la raíz es: 1.12500
+La semilla a usar para la bï¿½squeda de la raï¿½z es: 1.12500
 
 Salvando las semillas en un archivo "CSV"......Listo
 
-Ejecutando el método de Newton-Raphson para f{2} y para la tolerancia 1.0e-10...Listo
+Ejecutando el mï¿½todo de Newton-Raphson para f{2} y para la tolerancia 1.0e-10...Listo
 
-Raíz hallada después de 4 iteraciones: 1.0500000000 +- 1.0e-10
+Raï¿½z hallada despuï¿½s de 4 iteraciones: 1.0500000000 +- 1.0e-10
 
 Salvando los resultados en un archivo "CSV"......Listo
 
 Estimando el orden de convergencia......Listo
 
-El orden de convergencia estimado para el método de Newton-Raphson es 2.00012932.
+El orden de convergencia estimado para el mï¿½todo de Newton-Raphson es 2.00012932.
 
-Salvando los resultados de la estimación del orden de convergencia en un archivo "CSV"......Listo
+Salvando los resultados de la estimaciï¿½n del orden de convergencia en un archivo "CSV"......Listo
 
 ****************************
-Calculando para Mínima carga (0 personas):
+Calculando para Mï¿½nima carga (0 personas):
 
-Hallamos el valor de tiempo en el cual se alcanza el 30% de la aceleración positiva. 
-Por tratarse de una función lineal el valor se halla trivialmente:
+Hallamos el valor de tiempo en el cual se alcanza el 30% de la aceleraciï¿½n positiva. 
+Por tratarse de una funciï¿½n lineal el valor se halla trivialmente:
 
-El 30% de la aceleración se alcanza en t_acel_30_percent = 0.6062180653.
+El 30% de la aceleraciï¿½n se alcanza en t_acel_30_percent = 0.6062180653.
 
-Hallamos el valor de posición en el tiempo hallado anteriormente. 
-Con este valor construimos la función (f{3}) a la cuál le hallaremos la raíz por Newton-Raphson:
+Hallamos el valor de posiciï¿½n en el tiempo hallado anteriormente. 
+Con este valor construimos la funciï¿½n (f{3}) a la cuï¿½l le hallaremos la raï¿½z por Newton-Raphson:
 
     @(t)x{ii}(t)-x{ii}(t_acel_30_percent(ii))
 
-Ejecutando el método de bisección para f{3}, como arranque, para la tolerancia 1.0e-01...Listo
+Ejecutando el mï¿½todo de bisecciï¿½n para f{3}, como arranque, para la tolerancia 1.0e-01...Listo
 
-La semilla a usar para la búsqueda de la raíz es: 0.64954
+La semilla a usar para la bï¿½squeda de la raï¿½z es: 0.64954
 
 Salvando las semillas en un archivo "CSV"......Listo
 
-Ejecutando el método de Newton-Raphson para f{3} y para la tolerancia 1.0e-10...Listo
+Ejecutando el mï¿½todo de Newton-Raphson para f{3} y para la tolerancia 1.0e-10...Listo
 
-Raíz hallada después de 4 iteraciones: 0.6062180653 +- 1.0e-10
+Raï¿½z hallada despuï¿½s de 4 iteraciones: 0.6062180653 +- 1.0e-10
 
 Salvando los resultados en un archivo "CSV"......Listo
 
 Estimando el orden de convergencia......Listo
 
-El orden de convergencia estimado para el método de Newton-Raphson es 1.99880274.
+El orden de convergencia estimado para el mï¿½todo de Newton-Raphson es 1.99880274.
 
-Salvando los resultados de la estimación del orden de convergencia en un archivo "CSV"......Listo
+Salvando los resultados de la estimaciï¿½n del orden de convergencia en un archivo "CSV"......Listo
 
 ****************************
 Calculando para v{4}:
 
-Para el caso del freno del ascensor usamos Newton-Raphson para calcular el tiempo en el que se alcanza velocidad 0, la función utilizada es:
+Para el caso del freno del ascensor usamos Newton-Raphson para calcular el tiempo en el que se alcanza velocidad 0, la funciï¿½n utilizada es:
 
     @(t)3.0625*t.^2-7.84
 
-Ejecutando el método de bisección para v{4}, como arranque, para la tolerancia 3.0e-01...Listo
+Ejecutando el mï¿½todo de bisecciï¿½n para v{4}, como arranque, para la tolerancia 3.0e-01...Listo
 
-La semilla a usar para la búsqueda de la raíz es: 1.75000
+La semilla a usar para la bï¿½squeda de la raï¿½z es: 1.75000
 
 Salvando las semillas en un archivo "CSV"......Listo
 
-Ejecutando el método de Newton-Raphson para v{4} y para la tolerancia 1.0e-10...Listo
+Ejecutando el mï¿½todo de Newton-Raphson para v{4} y para la tolerancia 1.0e-10...Listo
 
-Raíz hallada después de 4 iteraciones: 1.6000000000 +- 1.0e-10
+Raï¿½z hallada despuï¿½s de 4 iteraciones: 1.6000000000 +- 1.0e-10
 
 Salvando los resultados en un archivo "CSV"......Listo
 
 Estimando el orden de convergencia......Listo
 
-El orden de convergencia estimado para el método de Newton-Raphson es 1.99999853.
+El orden de convergencia estimado para el mï¿½todo de Newton-Raphson es 1.99999853.
 
-Salvando los resultados de la estimación del orden de convergencia en un archivo "CSV"......Listo
+Salvando los resultados de la estimaciï¿½n del orden de convergencia en un archivo "CSV"......Listo
 
 
 
-Ejecución del TP1 terminada.
+Ejecuciï¿½n del TP1 terminada.
 
