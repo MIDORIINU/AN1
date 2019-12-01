@@ -346,12 +346,7 @@ while (1)
         num2str(Theta_0, 16) num2str(Omega_0, 16)});
     
     % Valido los datos.
-    if (isempty(answer))
-        
-        dlg = errordlg('Parámteros inválidos', 'Error', 'modal');
-        
-        uiwait(dlg);
-        
+    if (isempty(answer))        
         continue;
         
     end % if

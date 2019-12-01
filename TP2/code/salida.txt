@@ -1,0 +1,54 @@
+Inicializando las variables globales para el TP2...Listo
+
+Trabajando en: MATLAB 9.7.0.1190202 (R2019b) sobre Windows.
+
+
+
+Creando el directorio para las imágenes...Listo
+
+Creando el directorio para los resultados numéricos...Listo
+
+Calculando la estimación de la solución del sistema con m = 1Kg, l = 1m, b = 0Ns/m, h = 0.2s, Theta0 = pi/6, Omega0 = 0...Listo
+
+Salvando los resultados en un archivo "CSV"......Listo
+
+Generando un gráfico de la solución...Listo
+
+Salvando el gráfico en un archivo "PNG"......Listo
+
+Calculando la integral del módulo de la posición......Listo
+
+El valor de la integral aproximada con Romberg del módulo de la posición es: 6.5419117322670095.
+
+Calculando la estimación de la solución del sistema con m = 1Kg, l = 1m, b = 0.5Ns/m, h = 0.2s, Theta0 = pi/6, Omega0 = 5*pi/6...Listo
+
+Salvando los resultados en un archivo "CSV"......Listo
+
+Generando un gráfico de la solución...Listo
+
+Salvando el gráfico en un archivo "PNG"......Listo
+
+Calculando la integral del módulo de la posición......Listo
+
+El valor de la integral aproximada con Romberg del módulo de la posición es: 2.7320644496497102.
+
+Calculando la estimación de la solución del sistema...Listo
+
+Generando un gráfico de la solución...Listo
+
+Calculando la integral del módulo de la posición......Listo
+
+El valor de la integral aproximada con Romberg del módulo de la posición es: 2.7378140579622841.
+
+Calculando la estimación de la solución del sistema...Listo
+
+Generando un gráfico de la solución...Listo
+
+Calculando la integral del módulo de la posición......Listo
+
+El valor de la integral aproximada con Romberg del módulo de la posición es: 0.5846264909781677.
+
+
+
+Ejecución del TP2 terminada.
+

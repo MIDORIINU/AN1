@@ -1,109 +1,37 @@
-A continuación se muestran los gráficos para la serie de tiempos para los valores iniciales $x_{2}(0) = 5$, $x_{3}(0) = 30$ con $t \in [0; 50]$, pero ahora variando el valor incial de la primera función solución en los valores $x_{1}(0) = 5.01$, $x_{1}(0) = 5.001$ y $x_{1}(0) = 5.0001$.
+
+En la figura~\figref{fig:fig_res_3} se muestra el gráfico de las soluciones del sistema del péndulo con los mismos parámetros que el primer caso pedido, pero reduciendo el paso a $h = 0.001 \si[per-mode=symbol]{\second}$, se puede ver como se puede discernir mucho mejor la formas de las soluciones con esta mayor cantidad de puntos.\\
+Finalmente en la figura~\figref{fig:fig_res_4} se puede ver las soluciones para el sistema para un caso en que no llegan casi a producirse oscilaciones, caso sobre-amortiguado, los parámetros para este caso son: 
+
+\begin{equation*}
+                \begin{array}{ll}
+                  m = 1 \si[per-mode=symbol]{\kilo\gram} \\
+                  l = 1 \si[per-mode=symbol]{\meter} \\  
+                  b = 5 \si[per-mode=symbol]{\newton\second\per\meter} \\ 
+                  h = 0.2 \si[per-mode=symbol]{\second} \\   
+                  \Theta_{0} = 30 \si[per-mode=symbol]{\degree} \\  
+                  \dot{\Theta}_{0} = 0 \si[per-mode=symbol]{\degree\per\second} \\            
+                \end{array}
+\end{equation*}
+
+
 
 
 \clearpage
 
-\subsection{Series de tiempo para $x_{1}$}
 
-%%%%%% x1
-
-\begin{figure}[!h] %htb
+\begin{figure}[H] %htb
 \begin{center}
-\includegraphics[width=0.5 \linewidth,trim=4.5cm 1.5cm 3.5cm 0.5cm, clip, keepaspectratio=true, angle=0]{img/grafico_time_series_x1_2.png} %% 
-\caption{\label{fig:fig_ts_x1_iv2}\footnotesize{Gráfico de la serie de tiempo para $x_{1}$ con $x_{1}(0) = 5.01$.}}
-\end{center}
-\end{figure}
-
-% \clearpage
-
-\begin{figure}[!h] %htb
-\begin{center}
-\includegraphics[width=0.5 \linewidth,trim=4.5cm 1.5cm 3.5cm 0.5cm, clip, keepaspectratio=true, angle=0]{img/grafico_time_series_x1_3.png} %% 
-\caption{\label{fig:fig_ts_x1_iv3}\footnotesize{Gráfico de la serie de tiempo para $x_{1}$ con $x_{1}(0) = 5.001$.}}
-\end{center}
-\end{figure}
-
-% \clearpage
-
-\begin{figure}[!h] %htb
-\begin{center}
-\includegraphics[width=0.5 \linewidth,trim=4.5cm 1.5cm 3.5cm 0.5cm, clip, keepaspectratio=true, angle=0]{img/grafico_time_series_x1_4.png} %% 
-\caption{\label{fig:fig_ts_x1_iv4}\footnotesize{Gráfico de la serie de tiempo para $x_{1}$ con $x_{1}(0) = 5.0001$.}}
+\makebox[\textwidth]{\includegraphics[width=0.95 \paperwidth,keepaspectratio=true, angle=90]{img/grafico_respuesta_3.png}} %% 
+\caption{\label{fig:fig_res_3}\footnotesize{Gráfico de la solución para el primer caso con mayor cantidad de puntos.}}
 \end{center}
 \end{figure}
 
 \clearpage
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-\subsection{Series de tiempo para $x_{2}$}
-
-%%%%%% x2
-
-\begin{figure}[!h] %htb
+\begin{figure}[H] %htb
 \begin{center}
-\includegraphics[width=0.5 \linewidth,trim=4.5cm 1.5cm 3.5cm 0.5cm, clip, keepaspectratio=true, angle=0]{img/grafico_time_series_x2_2.png} %% 
-\caption{\label{fig:fig_ts_x2_iv2}\footnotesize{Gráfico de la serie de tiempo para $x_{2}$ con $x_{1}(0) = 5.01$.}}
+\makebox[\textwidth]{\includegraphics[width=0.95 \paperwidth,keepaspectratio=true, angle=90]{img/grafico_respuesta_4.png}} %% 
+\caption{\label{fig:fig_res_4}\footnotesize{Gráfico de la solución para un sistema sobre-amortiguado.}}
 \end{center}
 \end{figure}
-
-% \clearpage
-
-\begin{figure}[!h] %htb
-\begin{center}
-\includegraphics[width=0.5 \linewidth,trim=4.5cm 1.5cm 3.5cm 0.5cm, clip, keepaspectratio=true, angle=0]{img/grafico_time_series_x2_3.png} %% 
-\caption{\label{fig:fig_ts_x2_iv3}\footnotesize{Gráfico de la serie de tiempo para $x_{2}$ con $x_{1}(0) = 5.001$.}}
-\end{center}
-\end{figure}
-
-% \clearpage
-
-\begin{figure}[!h] %htb
-\begin{center}
-\includegraphics[width=0.5 \linewidth,trim=4.5cm 1.5cm 3.5cm 0.5cm, clip, keepaspectratio=true, angle=0]{img/grafico_time_series_x2_4.png} %% 
-\caption{\label{fig:fig_ts_x2_iv4}\footnotesize{Gráfico de la serie de tiempo para $x_{2}$ con $x_{1}(0) = 5.0001$.}}
-\end{center}
-\end{figure}
-
-\clearpage
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\subsection{Series de tiempo para $x_{3}$}
-
-%%%%%% x3
-
-\begin{figure}[!h] %htb
-\begin{center}
-\includegraphics[width=0.5 \linewidth,trim=4.5cm 1.5cm 3.5cm 0.5cm, clip, keepaspectratio=true, angle=0]{img/grafico_time_series_x3_2.png} %% 
-\caption{\label{fig:fig_ts_x3_iv2}\footnotesize{Gráfico de la serie de tiempo para $x_{3}$ con $x_{1}(0) = 5.01$.}}
-\end{center}
-\end{figure}
-
-% \clearpage
-
-\begin{figure}[!h] %htb
-\begin{center}
-\includegraphics[width=0.5 \linewidth,trim=4.5cm 1.5cm 3.5cm 0.5cm, clip, keepaspectratio=true, angle=0]{img/grafico_time_series_x3_3.png} %% 
-\caption{\label{fig:fig_ts_x3_iv3}\footnotesize{Gráfico de la serie de tiempo para $x_{3}$ con $x_{1}(0) = 5.001$.}}
-\end{center}
-\end{figure}
-
-% \clearpage
-
-\begin{figure}[!h] %htb
-\begin{center}
-\includegraphics[width=0.5 \linewidth,trim=4.5cm 1.5cm 3.5cm 0.5cm, clip, keepaspectratio=true, angle=0]{img/grafico_time_series_x3_4.png} %% 
-\caption{\label{fig:fig_ts_x3_iv4}\footnotesize{Gráfico de la serie de tiempo para $x_{3}$ con $x_{1}(0) = 5.0001$.}}
-\end{center}
-\end{figure}
-
-\clearpage
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Observación del comportamiento}
-
-Se puede observar que la serie de tiempos es muy sensible a las variaciones de las condiciones inicales, con solo cambiar en muy poco solo uno de los valores inciales se observa que a pesar de que las series de tiempo siguen siendo oscilantes, los valores de las oscilaciones y  su exacta forma es completamente distinta en cada caso.

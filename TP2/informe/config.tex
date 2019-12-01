@@ -113,6 +113,24 @@
 
 
 %\\\\\\\\\\\\\\\\\\\\\\\\\\\
+% FOR CVS FILES
+\usepackage{pgfplotstable}
+\usepackage{datatool}
+
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+% NUMERIC
+%\usepackage[noautolanguage]{numprint}
+\usepackage{siunitx}
+\usepackage{expl3}
+\usepackage{intcalc}
+\usepackage{fltpoint}
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
 % UNITS
 
 \usepackage{siunitx}
@@ -133,7 +151,6 @@
 
 \usepackage{xparse}
 
-\numberwithin{equation}{subsection}
 
 \NewDocumentCommand{\evalat}{sO{\big}mm}{%
   \IfBooleanTF{#1}
@@ -142,6 +159,14 @@
 }
 
 \newcommand{\mathcolorbox}[2]{\colorbox{#1}{$\displaystyle #2$}}
+
+
+% Highlight equation
+\newcommand{\highlight}[2]{\mathchoice%
+  {\colorbox{#1}{$\displaystyle#2$}}%
+  {\colorbox{#1}{$\textstyle#2$}}%
+  {\colorbox{#1}{$\scriptstyle#2$}}%
+  {\colorbox{#1}{$\scriptscriptstyle#2$}}}%
 
 %\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
@@ -237,14 +262,21 @@
 %\\\\\\\\\\\\\\\\\\\\\\\\\\\
 %equation numbers to subsection level
 %\numberwithin{equation}{subsection}
-%\numberwithin{equation}{section}
+\numberwithin{equation}{section}
 %\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 
 %\\\\\\\\\\\\\\\\\\\\\\\\\\\
-%equation numbers to subsection level
+%table numbers to subsection level
 %\numberwithin{table}{subsection}
-\numberwithin{table}{subsection}
+\numberwithin{table}{section}
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+%figure numbers to subsection level
+%\numberwithin{table}{subsection}
+\numberwithin{figure}{section}
 %\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 
@@ -428,6 +460,7 @@
 \definecolor{Deeppurple}{rgb}{0.2,0,1}
 \definecolor{Gray}{rgb}{0.3,0.3,0.3}
 \definecolor{Lightblue}{rgb}{0.60, 0.80, 1.00}
+\definecolor{Lightblue2}{RGB}{200, 255, 255}
 \definecolor{Lightyellow}{rgb}{1.00,1.00,0.60}
 \definecolor{LightButter}{rgb}{0.98,0.91,0.31}
 \definecolor{LightOrange}{rgb}{0.98,0.68,0.24}

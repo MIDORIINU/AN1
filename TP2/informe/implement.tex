@@ -27,7 +27,7 @@ El método de Romberg se implementó,así como está descripto en la bibliograf�
 
 El error del método de integración de Romberg ($R_{n,n}$), asumiendo que la función es suficientemente diferenciable, está en $O \left(  h^{\left( 2 \cdot n + 2 \right)}  \right)$, donde h es el paso, que en el caso de esté método, vale en cada iteración $h = \frac{1}{2^{n}} \cdot \left( a - b \right)$, siendo $a$ y $b$ los límites de integración y $n$ el número de iteración.\\
 
-El hecho de que usemos interpolación en la función que integramos, sin embargo, hace que este error no sea del todo correcto, una determinación mas detallada, haría necesario analizar como afecta el spline este resultado. Dado que usamos un nivel de Romberg de $6$ y el intervalo tiene en todos los casos una longitud de $20s$, ignorando la cuestión de la interpolación, tendríamos un error del orden de $0.3$.
+El hecho de que usemos interpolación en la función que integramos, sin embargo, hace que este error no sea del todo correcto, una determinación mas detallada, haría necesario analizar como afecta el spline este resultado. Dado que usamos un nivel de Romberg de $6$ y el intervalo tiene en todos los casos una longitud de $20 \si[per-mode=symbol]{\second}$, ignorando la cuestión de la interpolación, tendríamos un error del orden de $0.3$.
 
 
 
