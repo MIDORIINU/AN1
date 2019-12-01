@@ -4,16 +4,13 @@
 % son salvados en el correspondiente directorio del informe, donde el
 % código de Latex los levanta automáticamente para generar el archivo
 % compilado final del informe.
-%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Limpio todas las variables globales.
 clear all;
 
 % Cierro todos los gráficos.
 close all;
-
-% Limpio la línea de comando.
-clc;
 
 % Determino si estoy trabajando en MATLAB u Octave.
 Is_Octave = (5 == exist('OCTAVE_VERSION', 'builtin'));
@@ -33,8 +30,23 @@ elseif (ispc)
     OS = 'Windows';
     % Windows platform.
     % Esto es necesario mayormente para Octave en Windows, en MATLAB
-    % es el default. Los scripts deberían estar codificados en CP1252.
-    [~, ~] = system('chcp 1252');
+    % CP1252 es el default. Los scripts deberían estar codificados
+    % en CP1252.
+    
+    if (Is_Octave)
+        major =  int8(str2double(substr(OCTAVE_VERSION, 1, ...
+            index(OCTAVE_VERSION, ".") - 1)));
+        
+        if (major >= 5)
+            [~, ~] = system ('chcp 65001');
+        else
+            [~, ~] = system('chcp 1252');
+        end
+        
+    else
+        [~, ~] = system('chcp 1252');
+    end
+    
 else
     OS = 'Sistema desconocido';
 end %if
@@ -58,42 +70,15 @@ if (exist(output_file, 'file'))
 end
 
 % Borro el archivo si existía previamente.
-if (exist('diary', 'file'))
-    delete('diary');
-end
+% if (exist('diary', 'file'))
+%     delete('diary');
+% end
 
 % Inicio la captura de la salida.
 diary on;
 
 % Inicio la ejecución.
 fprintf('Inicializando las variables globales para el TP2...');
-
-% Tiempo final.
-tend = 20;
-
-% Masa.
-m = 1;
-
-% Longitud del hilo.
-l = 1;
-
-% Rozamiento.
-b = 1;
-
-% Paso.
-h = 0.0001;
-
-% Ángulo inicial.
-Theta_0 = pi/6;
-
-% Velocidad angular inicial.
-Omega_0 = 0;
-
-% En el caso de Octave, un valor muy chico causa problemas
-if (Is_Octave)
-    h = 0.001;
-end
-
 
 % Declaro los colores a utilizar en los gráficos.
 x1Color = [1 0 0];
@@ -111,10 +96,10 @@ images_directory = fullfile('..', 'informe', 'img');
 results_directory = fullfile('..', 'informe', 'results');
 
 % Declaro los nombres de los archivos a guardar.
-grafico_time_series_prefix = 'grafico_time_series_';
-grafico_orbita_1 = 'grafico_orbita_1.png';
-grafico_orbita_2 = 'grafico_orbita_2.png';
-grafico_orbita_3 = 'grafico_orbita_3.png';
+grafico_respuesta_prefix = 'grafico_respuesta';
+grafico_1 = '_1.png';
+grafico_2 = '_2.png';
+grafico_3 = '_3.png';
 
 fprintf('Listo\n\n');
 
@@ -138,8 +123,8 @@ success = (7 == exist(images_directory, 'dir'));
 
 % Chequeo que el directorio para las imágenes exista.
 if (~success)
-    fprintf(strjoin({'\nNo se pudo crear', ...
-        'el directorio para las imágenes.\n\n'}));
+    fprintf(strjoin({'\nNo se pudo crear ', ...
+        'el directorio para las imágenes.\n\n'}, ''));
     
     exit;
 else
@@ -154,8 +139,8 @@ success = (7 == exist(results_directory, 'dir'));
 
 % Chequeo que el directorio para los archivos numéricos exista.
 if (~success)
-    fprintf(strjoin({'\nNo se pudo crear', ...
-        'el directorio para los resultados.\n\n'}));
+    fprintf(strjoin({'\nNo se pudo crear' , ...
+        'el directorio para los resultados.\n\n'}, ''));
     
     exit;
 else
@@ -167,23 +152,43 @@ end
 
 format long;
 
-
 while (1)
     
-    opts.Interpreter = 'tex';
-    opts.Default = 'No';
+    % Tiempo final.
+    tend = 20;
     
+    % Masa.
+    m = 1;
+    
+    % Longitud del hilo.
+    l = 1;
+    
+    % Rozamiento.
+    b = 1;
+    
+    % Paso.
+    h = 0.0001;
+    
+    % Ángulo inicial.
+    Theta_0 = pi/6;
+    
+    % Velocidad angular inicial.
+    Omega_0 = 0;
+    
+    % En el caso de Octave, un valor muy chico causa problemas
+    if (Is_Octave)
+        h = 0.001;
+    end
+   
     answer = questdlg(strjoin({'¿Desea resolver el sistema', ...
         ' para otros parámetros?'}, ''), ...
-        'Pregunta', 'Si', 'No', opts);
+        'Pregunta', 'Si', 'No', 'No');
     
     if ( ~strcmp('Si', answer))
-        fprintf('Calculo cancelado.\n');
         break;
-    end %if
+    end %if       
     
-    
-    
+    % Pido los datos para resolver el problema.
     answer = inputdlg({'Masa del péndulo [Kg]','Largo del hilo (m)', ...
         'Rozamiento [Kg/s]', 'Paso [s]', 'Ángulo inicial [rad]', ...
         'Velocidad angular inicial [rad/s]'},...
@@ -192,13 +197,16 @@ while (1)
         {num2str(m, 16) num2str(l, 16) num2str(b, 16) num2str(h, 16) ...
         num2str(Theta_0, 16) num2str(Omega_0, 16)});
     
-    
-    if (isempty(answer))
-        fprintf('Calculo cancelado por error.\n');
-        break;
-    end % if
-    
-    
+    % Valido los datos.
+    if (isempty(answer))  
+        
+        dlg = errordlg('Parámteros inválidos', 'Error', 'modal');
+        
+        uiwait(dlg);
+        
+        continue;
+        
+    end % if    
     
     m = str2double(answer{1});
     
@@ -210,21 +218,61 @@ while (1)
     
     Theta_0 = str2double(answer{5});
     
-    Omega_0 = str2double(answer{6}); 
+    Omega_0 = str2double(answer{6});
     
+    % Valido los datos ingresados.
+    if isnan(h) || isnan(b) || isnan(l) || isnan(m) || isnan(Theta_0) || ...
+            isnan(Omega_0) || (b < 0) || (l <= 0) || (m <= 0) || ...
+        ((Theta_0 == 0) && (Omega_0 == 0))
+        
+        dlg = errordlg('Parámteros inválidos', 'Error', 'modal');
+        
+        uiwait(dlg);
+        
+        continue;
+        
+    end %if
+    
+    % Resuelvo la ecuación del péndulo para los parámetros dados.
     [t, x, s] = pendulum(tend, h, b, l, m, Theta_0, Omega_0);
     
-     if (~s)
-         continue;
-     end % fi
+    if (~s)
+        continue;
+    end % fi
     
-    close all; plot(t, x(:,1)'); hold; plot(t, x(:,2)'); hold off;
+    close all; 
+    
+    % Genero el gráfico de las soluciones.
+    plot_solution(t, x(:,1)', x(:,2)', 'Ángulo y velocidad angular', 100);
+        
     
 end
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
 
+% El script se ejecutó correctamente..
+fprintf('\n\nEjecución del TP2 terminada.\n\n');
 
+% Detengo la captura de la salida del script.
+diary off;
 
+% Copio el archivo de salida.
+fprintf('Copiando el archivo de salida......');
+
+[status, ~] = copyfile('diary', output_file);
+
+% Chequeo que la copia se realizó correctamente.
+if (~status)
+    fprintf(strjoin({'\nFalló la copia', ...
+        'del archivo de salida.\n\n'}));
+    
+    return;
+else %if
+    fprintf('Listo\n\n');
+end %if
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 return;
 
