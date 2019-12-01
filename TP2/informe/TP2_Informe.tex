@@ -1,0 +1,185 @@
+
+\input{config}
+
+
+
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+%-------------------------------------------------
+%--------------- BEGIN DOCUMENT ------------------
+%-------------------------------------------------
+\begin{document}
+
+
+
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+%Incluyo la caratula
+%Caratula
+\input{caratula}
+\thispagestyle{empty}
+\cleardoublepage
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+%Reinicio la cuenta y seteo el estilo de headers y footers.
+\pagestyle{indexstyle}
+\pagenumbering{Roman}
+\setcounter{page}{1}
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\begin{small}
+\pagestyle{indexstyle}
+\pagenumbering{Roman}
+
+\tableofcontents 
+\addcontentsline{toc}{section}{Índice}
+
+%\phantomsection\pdfbookmark[0]{\indexname}{bookmarkForTheIndex}
+
+\cleardoublepage
+
+\pagestyle{indexstyle}
+\pagenumbering{Roman}
+
+\listoffigures
+\addcontentsline{toc}{section}{Índice de figuras}
+
+\pagestyle{indexstyle}
+\pagenumbering{Roman}
+
+\cleardoublepage
+
+\pagestyle{indexstyle}
+\pagenumbering{Roman}
+
+%\listoftables
+%\addcontentsline{toc}{section}{Índice de cuadros}
+
+\pagestyle{indexstyle}
+\pagenumbering{Roman}
+
+\end{small}
+
+\cleardoublepage
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+%Reinicio la cuenta y seteo el estilo de headers y footers.
+\pagestyle{allpages}
+\setcounter{page}{1}
+\pagenumbering{arabic}
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\section{Enunciado}
+\resetallcounters
+\input{enunciado}
+%\cleardoublepage
+\clearpage
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\section{Implementación de los algoritmos}
+\resetallcounters
+\input{implement}
+%\cleardoublepage
+\clearpage
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\section{Aproximación de la solución del sistema}
+\resetallcounters
+\input{runge-kutta}
+%\cleardoublepage
+\clearpage
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\section{Primer caso}
+\resetallcounters
+\input{problem1}
+%\cleardoublepage
+%\clearpage
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\section{Segundo caso}
+\resetallcounters
+\input{problem2}
+\clearpage
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\section{Otros casos}
+\resetallcounters
+\input{problem3}
+\clearpage
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\section{Observaciones y conclusiones}
+\resetallcounters
+\input{conclusiones}
+%\cleardoublepage
+\clearpage
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+%Reinicio la cuenta y seteo el estilo de headers y footers.
+\pagestyle{bibliostyle}
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\section{Bibliografía}
+\resetallcounters
+\input{bibliografia}
+%\cleardoublepage
+\clearpage
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+\appendix
+
+\appendixpage
+\addappheadtotoc
+
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+%Seteo el estilo de headers y footers.
+\pagestyle{codestyle}
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+%Seteo el estilo de headers y footers.
+\pagestyle{codestyle}
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\section{Código fuente}
+
+\resetallcounters
+\input{code}
+%\cleardoublepage
+\clearpage
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\section{Captura de la salida}
+
+\resetallcounters
+\input{output}
+%\cleardoublepage
+\clearpage
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+%Seteo el estilo de headers y footers.
+\pagestyle{allpages}
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+
+
+\end{document}

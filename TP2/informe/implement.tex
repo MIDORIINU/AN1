@@ -1,0 +1,44 @@
+
+El script resuelve en principio los casos pedidos en el enunciado, y luego toma interactivamente con diálogos nuevos parámetros al usuario, los cuales valida y utiliza para resolver el nuevo sistema, en cada caso se grafica las funciones de posición (angulo) y su derivada (velocidad angular) y se calcula la integral del módulo de la posición (angulo) en el intervalo.\\
+
+
+A continuación se listan los archivos de \textbf{MATLAB} y su función: \\\\
+
+
+\textbf{\quotemarks{tp2.m}}~(apéndice~\apendref{apendix:file_tp2}): Script principal que se debe ejecutar para realizar todos los cálculos y generar los archivos de resultados.\\
+
+\textbf{\quotemarks{pendulum.m}}~(apéndice~\apendref{apendix:file_pendulum}): Función que invoca nuestra implementación de Runge-Kutta de orden 4 para el sistema del péndulo.\\
+
+\textbf{\quotemarks{rk4.m}}~(apéndice~\apendref{apendix:file_rk4}): Función con nuestra implementación del algoritmo Runge-Kutta de orden 4 en forma genérica matricial.\\
+
+\textbf{\quotemarks{plot\_solution.m}}~(apéndice~\apendref{apendix:file_pts}): Función que grafica el ángulo y la velocidad obtenidas.\\
+
+\textbf{\quotemarks{trapezcomp.m}}~(apéndice~\apendref{apendix:file_trapezcomp}): Función que implementa el método de integración de trapecios compuesto (usado en Romberg).\\
+
+\textbf{\quotemarks{romberg.m}}~(apéndice~\apendref{apendix:file_romberg}): Función que implementa el método de integración de Romberg.\\
+
+En el apéndice correspondiente~(apéndice~\apendref{apendix:files}) se incluye el código completo de cada archivo.\\\\
+
+\textbf{\quotemarks{salida.txt}}~(apéndice~\apendref{apendix:file_salida}): La salida del script principal, se captura automáticamente en \textbf{MATLAB} al ejecutar el script principal.\\\\
+
+
+Algo importante a aclarar, es que decidimos implementar el método de integración de Romberg en su forma \quotemarks{standard}, en esta forma se requiere la evaluación de la función a integrar en puntos arbitrarios, para poder luego integrar la función que representa el módulo de la posición del péndulo, se interpoló la función entre los puntos obtenidos con Runge-Kutta, usando un spline. Esta no era la única forma de realizar la integración, pero era la que mas se adaptaba a usar el algoritmo de Romberg sin modificaciones, además era muy simple dado que \textbf{MATLAB} y \textbf{Octave} proveen la función \textbf{interp1} que puede realizar distintos tipos de interpolación sobre un array de puntos, entre ellas, spline.
+El método de Romberg se implementó,así como está descripto en la bibliografía, usando interpolación de Richardson y el método de trapecios compuesto, para lo cual se implementó el mismo, también en su forma \quotemarks{standard}.\\
+
+El error del método de integración de Romberg ($R_{n,n}$), asumiendo que la función es suficientemente diferenciable, está en $O \left(  h^{\left( 2 \cdot n + 2 \right)}  \right)$, donde h es el paso, que en el caso de esté método, vale en cada iteración $h = \frac{1}{2^{n}} \cdot \left( a - b \right)$, siendo $a$ y $b$ los límites de integración y $n$ el número de iteración.\\
+
+El hecho de que usemos interpolación en la función que integramos, sin embargo, hace que este error no sea del todo correcto, una determinación mas detallada, haría necesario analizar como afecta el spline este resultado. Dado que usamos un nivel de Romberg de $6$ y el intervalo tiene en todos los casos una longitud de $20s$, ignorando la cuestión de la interpolación, tendríamos un error del orden de $0.3$.
+
+
+
+
+
+
+\clearpage
+
+\subsection{Sobre los archivos de \textbf{MATLAB} y \textbf{Octave}}
+
+Hay algunas cosas a comentar sobre las diferencias entre \textbf{MATLAB} y \textbf{Octave}, como se comentó anteriormente, se logró la compatibilidad de ejecución entre los entornos, sin embargo las salidas no son completamente equivalentes, debido a limitaciones en \textbf{Octave}, las salidas gráficas no son completamente equivalentes, en particular \textbf{MATLAB} permite la generación de \textbf{DataTips}, cosa que \textbf{Octave} aún no soporta, otra cuestión quizás mas importante es la eficiencia en ejecución, en algunos casos los tiempo de ejecución en \textbf{Octave} se hacen demasiado largos si se usan arrays muy extensos, lo cual se mitigó usando compilación condicional. Otra cosa a mencionar que no hace a la funcionalidad directamente, pero si a la presentación, es que debido a limitaciones en ambos entornos respecto a la codificación de los archivos y soporte incompleto o inadecuado de \textbf{UNICODE} en la línea de comando de \textbf{Windows}, se producen problemas en las salidas con símbolos que no sean parte de Latin-1 (ISO 8859-1), en particular las palabras con tilde, esto se ve aún mas complicado porque \textbf{Windows} usa una variante (CP1252) que no es completamente compatible con Latin-1 y el hecho de que los entornos de \textbf{MATLAB} y \textbf{Octave} no se comportan consistentemente en \textbf{Windows} y sistemas tipo Unix como \textbf{Linux}, en Unix es prácticamente universal la codificación de \textbf{UNICODE}, \textbf{UTF-8}. \textbf{MATLAB} sigue la codificación del sistema operativo, mientras que \textbf{Octave} intenta usar \textbf{UTF-8} siempre, pero en \textbf{Windows} no es completo el soporte. El tema es complicado y no hace al trabajo práctico el lidiar con el mismo, dado que trabajamos mayormente con \textbf{MATLAB}, tanto en \textbf{Windows} como en \textbf{Linux}, y la mayoría usa \textbf{Windows}, se optó por dejar los archivos en \textbf{CP1252}, siendo esta la codificación usual. Se incluyen simplemente por comodidad dos scripts de \textbf{Python}, \textbf{\quotemarks{utf8.py}} y \textbf{\quotemarks{cp1252.py}}, que convierten la codificación de todos los archivos \textbf{\quotemarks{.m}} a las respectivas codificaciones, de esa manera, según el sistema en que se ejecuten los scripts,  se puede lograr una salida con codificación correcta.
+
+
+\clearpage

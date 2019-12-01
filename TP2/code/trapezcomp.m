@@ -1,17 +1,21 @@
-function In = trapezcomp(f, a, b, n)
-%    Composite trapezoidal function integration
+% Implementa el método de Trapecios.
 %
-%    INPUTS:
-%    f:  the function to integrate
-%    a:  lower bound of integration
-%    b:  upper bound
-%    n:  number of panels to create between ``a`` and ``b``
+% Parámetros:
+% -----------
+% f:        Puntero a la función que cuya integral se desea aproximar.
+% a:        Inicio del intervalo de integración.
+% b:        Fin del intervalo de integración.
+% n:        Número de paneles.
+% Salidas:
+% --------
+% In:       Valor de la integral aproximada.
+function In = trapezcomp(f, a, b, n)
 
-% Initialization
+% Incialización.
 h = (b-a)/n;
 x = a;
 
-% Composite rule
+%Regla compuesta.
 In =f(a);
 for k=2:n
     x  = x + h;

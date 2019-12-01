@@ -1,0 +1,45 @@
+
+\subsection{Resumen enunciado}
+
+
+%\bfseries{\color{red} Enunciado:}
+
+\normalfont
+
+Este TP consiste en realizar una implementación del algoritmo Runge-Kutta de orden 4, para cuyo testeo se propuso resolver el sistema de ecuaciones diferenciales que se obtiene a partir de la conocida ecuación diferencial de segundo orden que se obtiene al plantear la oscilación de un péndulo:
+
+
+\begin{equation}
+\ddot{\theta} + \frac{b}{m} \cdot \dot{\theta} + \frac{g}{l} \cdot sin \left( \theta \right) = 0
+\label{eq:pendulum}
+\end{equation}
+
+
+Planteando:
+\begin{equation*}
+                \begin{array}{ll}
+                  \theta = x_{1} \\
+                  \dot{\theta} = x_{2} \\                
+                \end{array}
+\end{equation*}
+
+Y reemplazando en la ecuación~\eqref{eq:pendulum}, se obtiene el sistema:
+
+\begin{equation}
+     L_{0}=\left\{
+                \begin{array}{ll}
+                  \dot{x_{1}} = x_{1} \\
+                  \dot{x_{2}} = - \frac{b}{m} \cdot x_{2} - \frac{g}{l} \cdot sin \left( x_{1} \right) \\
+                \end{array}
+              \right. 
+\end{equation}
+
+Además de lo anterior, se pide que se implemente el método de integración de Romberg, y se aplique al cálculo del área encerrada bajo la curva del módulo del desplazamiento del péndulo.
+
+
+\subsection{Resolución}
+
+Para la resolución de la parte de programación del trabajo práctico e implementar los algoritmos pedidos, decidimos usar \textbf{MATLAB}, mayormente por conocerlo previamente y la sencillez con la que se pueden escribir scripts que implementen los algoritmos. A pesar de que la resolución se realizó en \textbf{MATLAB}, se prestó atención a la compatibilidad con \textbf{Octave}, ya que la compatibilidad en los paquetes básicos es alta y con un poco de cuidado y algo de programación condicional se puede lograr que los scripts funcionen en ambos entornos.
+Todos los resultados numéricos se guardaron por código desde \textbf{MATLAB} en formato \textbf{\quotemarks{CSV}} y las imágenes se guardaron también por código en formato \textbf{\quotemarks{PNG}} y luego se incorporaron desde \LaTeX. 
+
+

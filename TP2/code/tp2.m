@@ -80,15 +80,6 @@ diary on;
 % Inicio la ejecución.
 fprintf('Inicializando las variables globales para el TP2...');
 
-% Declaro los colores a utilizar en los gráficos.
-x1Color = [1 0 0];
-x2Color = [0 1 0];
-
-pColor = [0.1 0.4 0.95];
-
-% Declaro el porcentaje de la panatalla que ocupan los gráficos.
-graphic_size_percent = 75;
-
 % Declaro el directorio para las imágenes.
 images_directory = fullfile('..', 'informe', 'img');
 
@@ -97,9 +88,23 @@ results_directory = fullfile('..', 'informe', 'results');
 
 % Declaro los nombres de los archivos a guardar.
 grafico_respuesta_prefix = 'grafico_respuesta';
-grafico_1 = '_1.png';
+grafico_1 = '_1';
 grafico_2 = '_2.png';
-grafico_3 = '_3.png';
+solutions_prefix = 'valores_respuesta';
+respuesta_1 = '_1';
+respuesta_2 = '_2';
+
+% Tiempo final.
+tend = 20;
+
+% Cantidad de filas para Romberg.
+romberg_levels = 10;
+
+% En el caso de Ocatve reduzco los nivels porque es menos eficiente y
+% tarda demasiado.
+if (Is_Octave)
+    romberg_levels = 6;
+end % if
 
 fprintf('Listo\n\n');
 
@@ -147,15 +152,158 @@ else
     fprintf('Listo\n\n');
 end
 
+% Seteo el formato de números por pantalla.
+format long;
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
+% Cálculo para el primer juego de parámetros.
 
-format long;
+fprintf(strjoin({'Calculando la estimación de '...
+    'la solución del sistema con m = 1Kg, l = 1m, ' ...
+    'b = 0Ns/m, h = 0.2s, Theta0 = pi/6, Omega0 = 0...'}, ''));
+
+% Resuelvo la ecuación del péndulo para los parámetros dados.
+% tend, h, b, l, m, Theta_0, Omega_0
+[t, x, ~] = pendulum(tend, 0.2, 0, 1, 1, pi/6, 0);
+
+% Generación completa.
+fprintf('Listo\n\n');
+
+% Guardo los resultados en un archivo.
+fprintf('Salvando los resultados en un archivo "CSV"......');
+
+% Armo la tabla de resultados finales con:
+% 1 - Tiempo.
+% 2 - Theta.
+% 3 - d(Theta)/dt.
+results = [t', x(:,1), x(:,2)];
+
+% Guardo la tabla de las iteraciones.
+dlmwrite(fullfile(results_directory, ...
+    strjoin({solutions_prefix, respuesta_1, '.csv'}, '')), ...
+    results, 'precision', '%.15f');
+
+% Guardado completo.
+fprintf('Listo\n\n');
+
+% Genero el gráfico de la  solución.
+fprintf('Generando un gráfico de la solución...');
+
+graphic_handle1 = ...
+    plot_solution(t, x(:,1)', x(:,2)', 'Ángulo y velocidad', 100);
+
+% Generación completa.
+fprintf('Listo\n\n');
+
+%%%
+solution_complete_name = ...
+    fullfile(images_directory, ...
+    strjoin({grafico_respuesta_prefix, grafico_1, ...
+    '.png'}, ''));
+
+fprintf('Salvando el gráfico en un archivo "PNG"......');
+
+% Salvo el gráfico en un archivo.
+saveas(graphic_handle1, solution_complete_name);
+
+% Salvado completo.
+fprintf('Listo\n\n');
+%%%
+
+fprintf('Calculando la integral del módulo de la posición......');
+
+% Genero la función del módulo interpolada usando spline.
+fint = @(y) interp1(t, abs(x(:,1)'),  y, 'spline');
+
+% Calculo la integral usando Romberg.
+I_romb = romberg(fint, 0, tend, romberg_levels);
+
+% Listo.
+fprintf('Listo\n\n');
+
+fprintf(strjoin({'El valor de la integral aproximada con Romberg del ' ...
+    'módulo de la posición es: %.16f.\n\n'}, ''), ...
+    I_romb(size(I_romb,1), size(I_romb,2)));
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+% Cálculo para el segundo juego de parámetros.
+
+fprintf(strjoin({'Calculando la estimación de '...
+    'la solución del sistema con m = 1Kg, l = 1m, ' ...
+    'b = 0.5Ns/m, h = 0.2s, Theta0 = pi/6, Omega0 = 5*pi/6...'}, ''));
+
+% Resuelvo la ecuación del péndulo para los parámetros dados.
+% tend, h, b, l, m, Theta_0, Omega_0
+[t, x, s] = pendulum(tend, 0.2, 0.5, 1, 1, pi/6, 5*pi/6);
+
+% Generación completa.
+fprintf('Listo\n\n');
+
+% Guardo los resultados en un archivo.
+fprintf('Salvando los resultados en un archivo "CSV"......');
+
+% Armo la tabla de resultados finales con:
+% 1 - Tiempo.
+% 2 - Theta.
+% 3 - d(Theta)/dt.
+results = [t', x(:,1), x(:,2)];
+
+% Guardo la tabla de las iteraciones.
+dlmwrite(fullfile(results_directory, ...
+    strjoin({solutions_prefix, respuesta_2, '.csv'}, '')), ...
+    results, 'precision', '%.15f');
+
+% Guardado completo.
+fprintf('Listo\n\n');
+
+% Genero el gráfico de la  solución.
+fprintf('Generando un gráfico de la solución...');
+
+graphic_handle2 = ...
+    plot_solution(t, x(:,1)', x(:,2)', 'Ángulo y velocidad', 100);
+
+% Generación completa.
+fprintf('Listo\n\n');
+
+%%%
+solution_complete_name = ...
+    fullfile(images_directory, ...
+    strjoin({grafico_respuesta_prefix, grafico_2, ...
+    '.png'}, ''));
+
+fprintf('Salvando el gráfico en un archivo "PNG"......');
+
+% Salvo el gráfico en un archivo.
+saveas(graphic_handle2, solution_complete_name);
+
+% Salvado completo.
+fprintf('Listo\n\n');
+%%%
+
+fprintf('Calculando la integral del módulo de la posición......');
+
+% Genero la función del módulo interpolada usando spline.
+fint = @(y) interp1(t, abs(x(:,1)'),  y, 'spline');
+
+% Calculo la integral usando Romberg.
+I_romb = romberg(fint, 0, tend, romberg_levels);
+
+% Listo.
+fprintf('Listo\n\n');
+
+fprintf(strjoin({'El valor de la integral aproximada con Romberg del ' ...
+    'módulo de la posición es: %.16f.\n\n'}, ''), ...
+    I_romb(size(I_romb,1), size(I_romb,2)));
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+% Cálculo para parámetros dados por el usuario.
 
 while (1)
     
-    % Tiempo final.
-    tend = 20;
+    % Ingreso los valores iniciales.
     
     % Masa.
     m = 1;
@@ -164,29 +312,29 @@ while (1)
     l = 1;
     
     % Rozamiento.
-    b = 1;
+    b = 0.5;
     
     % Paso.
-    h = 0.0001;
+    h = 0.001;
     
     % Ángulo inicial.
     Theta_0 = pi/6;
     
     % Velocidad angular inicial.
-    Omega_0 = 0;
+    Omega_0 = 5*pi/6;
     
     % En el caso de Octave, un valor muy chico causa problemas
     if (Is_Octave)
-        h = 0.001;
+        h = 0.01;
     end
-   
+    
     answer = questdlg(strjoin({'¿Desea resolver el sistema', ...
         ' para otros parámetros?'}, ''), ...
         'Pregunta', 'Si', 'No', 'No');
     
     if ( ~strcmp('Si', answer))
         break;
-    end %if       
+    end %if
     
     % Pido los datos para resolver el problema.
     answer = inputdlg({'Masa del péndulo [Kg]','Largo del hilo (m)', ...
@@ -198,7 +346,7 @@ while (1)
         num2str(Theta_0, 16) num2str(Omega_0, 16)});
     
     % Valido los datos.
-    if (isempty(answer))  
+    if (isempty(answer))
         
         dlg = errordlg('Parámteros inválidos', 'Error', 'modal');
         
@@ -206,7 +354,7 @@ while (1)
         
         continue;
         
-    end % if    
+    end % if
     
     m = str2double(answer{1});
     
@@ -223,7 +371,7 @@ while (1)
     % Valido los datos ingresados.
     if isnan(h) || isnan(b) || isnan(l) || isnan(m) || isnan(Theta_0) || ...
             isnan(Omega_0) || (b < 0) || (l <= 0) || (m <= 0) || ...
-        ((Theta_0 == 0) && (Omega_0 == 0))
+            ((Theta_0 == 0) && (Omega_0 == 0))
         
         dlg = errordlg('Parámteros inválidos', 'Error', 'modal');
         
@@ -233,6 +381,9 @@ while (1)
         
     end %if
     
+    fprintf(strjoin({'Calculando la estimación de '...
+        'la solución del sistema...'}, ''));
+    
     % Resuelvo la ecuación del péndulo para los parámetros dados.
     [t, x, s] = pendulum(tend, h, b, l, m, Theta_0, Omega_0);
     
@@ -240,16 +391,46 @@ while (1)
         continue;
     end % fi
     
-    close all; 
+    % Listo.
+    fprintf('Listo\n\n');
+    
+    if exist('graphic_handle', 'var') == 1
+        % Cierro el gráfico previo.
+        close(graphic_handle);
+    end
+    
+    % Genero el gráfico de la  solución.
+    fprintf('Generando un gráfico de la solución...');
     
     % Genero el gráfico de las soluciones.
-    plot_solution(t, x(:,1)', x(:,2)', 'Ángulo y velocidad angular', 100);
-        
+    graphic_handle = plot_solution(t, x(:,1)', x(:,2)', ...
+        'Ángulo y velocidad', 100);
     
+    % Listo.
+    fprintf('Listo\n\n');
+
+    
+    
+    fprintf('Calculando la integral del módulo de la posición......');
+    
+    % Genero la función del módulo interpolada usando spline.
+    fint = @(y) interp1(t, abs(x(:,1)'),  y, 'spline');
+    
+    % Calculo la integral usando Romberg.
+    I_romb = romberg(fint, 0, tend, romberg_levels);
+    
+    % Listo.
+    fprintf('Listo\n\n');
+    
+    fprintf(strjoin({'El valor de la integral aproximada con Romberg del ' ...
+        'módulo de la posición es: %.16f.\n\n'}, ''), ...
+        I_romb(size(I_romb,1), size(I_romb,2)));
+        
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
+% Guardo la salida del programa.
 
 % El script se ejecutó correctamente..
 fprintf('\n\nEjecución del TP2 terminada.\n\n');
@@ -273,207 +454,3 @@ else %if
 end %if
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-return;
-
-sz = size(x0_vals);
-
-for i = 1:sz(1)
-    
-    fprintf(strjoin({'Calculando la estimación de'...
-        'la solución del sistema con x1(0) = %.4f......'}), ...
-        x0_vals(i, 1));
-    
-    [ts, xs] = lorenz(tend, step, x0_vals(i, :));
-    
-    % Cálculo completo.
-    fprintf('Listo\n\n');
-    
-    if (i == 1)
-        t = ts;
-        x = xs;
-    end % if
-    
-    title = sprintf(...
-        'Serie de tiempo para x1 - con x1(0) = %.4f', ...
-        x0_vals(i, 1));
-    
-    % Genero el gráfico de la órbita de la solución
-    fprintf(strjoin({'Generando un gráfico de la serie de tiempo',...
-        'para x1...'}));
-    
-    graphic_handle = plot_time_series(ts, xs(:,1), title, 'x1(t)', ...
-        x1Color, graphic_size_percent);
-    
-    % Generación completa.
-    fprintf('Listo\n\n');
-    
-    %%%
-    time_series_complete_name = ...
-        fullfile(images_directory, ...
-        strjoin({grafico_time_series_prefix, 'x1_', ...
-        sprintf('%d', i), ...
-        '.png'}, ''));
-    
-    fprintf('Salvando el gráfico en un archivo "PNG"......');
-    
-    % Salvo el gráfico en un archivo.
-    saveas(graphic_handle, time_series_complete_name);
-    
-    % Salvado completo.
-    fprintf('Listo\n\n');
-    %%%
-    
-    title = sprintf(...
-        'Serie de tiempo para x2 - con x1(0) = %.4f', ...
-        x0_vals(i, 1));
-    
-    % Genero el gráfico de la órbita de la solución
-    fprintf(strjoin({'Generando un gráfico de la serie de tiempo',...
-        'para x2...'}));
-    
-    graphic_handle = plot_time_series(ts, xs(:,2), title, 'x2(t)',...
-        x2Color, graphic_size_percent);
-    
-    % Generación completa.
-    fprintf('Listo\n\n');
-    
-    %%%
-    time_series_complete_name = ...
-        fullfile(images_directory, ...
-        strjoin({grafico_time_series_prefix, 'x2_', ...
-        sprintf('%d', i), ...
-        '.png'}, ''));
-    
-    fprintf('Salvando el gráfico en un archivo "PNG"......');
-    
-    % Salvo el gráfico en un archivo.
-    saveas(graphic_handle, time_series_complete_name);
-    
-    % Salvado completo.
-    fprintf('Listo\n\n');
-    %%%
-    
-    title = sprintf(...
-        'Serie de tiempo para x3 - con x1(0) = %.4f', ...
-        x0_vals(i, 1));
-    
-    % Genero el gráfico de la órbita de la solución
-    fprintf(strjoin({'Generando un gráfico de la serie de tiempo',...
-        'para x3...'}));
-    
-    graphic_handle = plot_time_series(ts, xs(:,3), title, 'x3(t)', ...
-        x3Color, graphic_size_percent);
-    
-    % Generación completa.
-    fprintf('Listo\n\n');
-    
-    %%%
-    time_series_complete_name = ...
-        fullfile(images_directory, ...
-        strjoin({grafico_time_series_prefix, 'x3_', ...
-        sprintf('%d', i), ...
-        '.png'}, ''));
-    
-    fprintf('Salvando el gráfico en un archivo "PNG"......');
-    
-    % Salvo el gráfico en un archivo.
-    saveas(graphic_handle, time_series_complete_name);
-    
-    % Salvado completo.
-    fprintf('Listo\n\n');
-    %%%
-    
-end % for
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%
-
-% Genero el gráfico de la órbita de la solución
-fprintf(strjoin({'Generando un gráfico de la órbita',...
-    ' de la solución el intervalo...'}));
-
-graphic_handle = plot_orbit(x, 'Órbita de la solución - Vista 1', ...
-    axis_orientations(1, :), x1Color, x2Color, x3Color, pColor, ...
-    graphic_size_percent);
-
-% Generación completa.
-fprintf('Listo\n\n');
-
-fprintf('Salvando el gráfico en un archivo "PNG"......');
-
-% Salvo el gráfico en un archivo.
-saveas(graphic_handle, fullfile(images_directory, ...
-    grafico_orbita_1));
-
-% Salvado completo.
-fprintf('Listo\n\n');
-
-%%%%%
-
-% Genero el gráfico de la órbita de la solución
-fprintf(strjoin({'Generando un gráfico de la órbita',...
-    ' de la solución el intervalo...'}));
-
-graphic_handle = plot_orbit(x, 'Órbita de la solución - Vista 2', ...
-    axis_orientations(2, :), x1Color, x2Color, x3Color, pColor, ...
-    graphic_size_percent);
-
-% Generación completa.
-fprintf('Listo\n\n');
-
-fprintf('Salvando el gráfico en un archivo "PNG"......');
-
-% Salvo el gráfico en un archivo.
-saveas(graphic_handle, fullfile(images_directory, ...
-    grafico_orbita_2));
-
-% Salvado completo.
-fprintf('Listo\n\n');
-
-%%%%%
-
-% Genero el gráfico de la órbita de la solución
-fprintf(strjoin({'Generando un gráfico de la órbita',...
-    ' de la solución el intervalo...'}));
-
-graphic_handle = plot_orbit(x, 'Órbita de la solución - Vista 3', ...
-    axis_orientations(3, :), x1Color, x2Color, x3Color, pColor, ...
-    graphic_size_percent);
-
-% Generación completa.
-fprintf('Listo\n\n');
-
-fprintf('Salvando el gráfico en un archivo "PNG"......');
-
-% Salvo el gráfico en un archivo.
-saveas(graphic_handle, fullfile(images_directory, ...
-    grafico_orbita_3));
-
-% Salvado completo.
-fprintf('Listo\n\n');
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%
-
-% El script se ejecutó correctamente..
-fprintf('\n\nEjecución del TP2 terminada.\n\n');
-
-% Detengo la captura de la salida del script.
-diary off;
-
-% Copio el archivo de salida.
-fprintf('Copiando el archivo de salida......');
-
-[status, ~] = copyfile('diary', output_file);
-
-% Chequeo que la copia se realizó correctamente.
-if (~status)
-    fprintf(strjoin({'\nFalló la copia', ...
-        'del archivo de salida.\n\n'}));
-    
-    return;
-else %if
-    fprintf('Listo\n\n');
-end %if
-

@@ -1,0 +1,9 @@
+
+Para aproximar el valor de las soluciones del sistema del péndulo se escribió una función específica~(apéndice~\apendref{apendix:file_pendulum}) que declara la función del sistema, los parámetros, las condiciones iniciales, llama a nuestra implementación del algoritmo de Runge-Kutta de orden 4, y devuelve la aproximación de la solución, luego el script principal se encarga de llamar a las funciones que grafican lo pedido.
+La implementación del método de Runge-Kutta de orden 4~(apéndice~\apendref{apendix:file_rk4}), se realizó en forma matricial, lo cual permitió un código muy simple y compacto, y conformando a los mismos parámetros que toman las funciones incluidas en \textbf{MATLAB} u \textbf{Ocatve}, como ser \textbf{ode23b}, o \textbf{ode23s}, lo cual nos permitió utilizar las mismas inicialmente para ver los resultados esperados de nuestra implementación, luego de implementada, fue solo cuestión de reemplazar las llamadas a las funciones del entorno por la nuestra. 
+
+
+
+
+
+\clearpage

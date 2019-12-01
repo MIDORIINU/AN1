@@ -6,7 +6,7 @@
 %           aproximó las  funciones solución del sistema en el intervalo.
 % Theta:    Array de los valores de ángulo correspodientes a la variable
 %           independiente,t, a graficar.
-% Omega:    Array de los valores de la velocidad angular 
+% Omega:    Array de los valores de la velocidad angular
 %           correspodientes a la variable independiente,t, a graficar.
 % titulo:   Título para el gráfico.
 % sz_perc:  Tamaño del gráfico en porcentaje de la pantalla.
@@ -27,6 +27,9 @@ elseif (sz_perc > 100.0)
     sz_perc = 100.0;
 end % if
 
+% Determino si estoy trabajando en MATLAB u Octave.
+Is_Octave = (5 == exist('OCTAVE_VERSION', 'builtin'));
+
 % Calculo el tamaño y la posición de la imagen.
 pict_size = sz_perc/100;
 pict_pos = (1 - pict_size)/2;
@@ -43,13 +46,23 @@ set(figure1, 'Color', [1 1 1]);
 axes1 = axes('Parent', figure1);
 
 % Activo eje izquierdo.
-yyaxis(axes1, 'left');
+%yyaxis(axes1, 'left');
 
 % Creo el gráfico de Theta.
-plot(axes1, t, Theta, 'Color', [1 0 0]);
+% plot(axes1, t, Theta, 'Color', [1 0 0]);
+
+% Grafico los datos.
+[yyax, h1, h2] = plotyy(axes1, t, Theta, t, Omega);
+
+% Seteo el color de los ejes de ordenadas.
+set(yyax, {'ycolor'}, {[1 0 0]; [0 0 1]})
+
+% Seteo el color de los gráficos.
+set(h1, 'color', [1 0 0]);
+set(h2, 'color', [0 0 1]);
 
 % Seteo el label para y.
-ylabel(axes1, '\Theta [rad]');
+ylabel(yyax(1), '\Theta [rad]');
 
 % Seteo el label para x.
 xlabel(axes1, 'Tiempo [s]');
@@ -57,8 +70,11 @@ xlabel(axes1, 'Tiempo [s]');
 % Seteo el título.
 title(axes1, titulo);
 
-% Labels inclinados.
-xtickangle(axes1, 75);
+% Octave no soporta labels inclinados.
+if (~Is_Octave)
+    % Labels inclinados.
+    xtickangle(axes1, 75);
+end % if
 
 % Límites para las abcisas.
 xlim(axes1, [t(1) t(length(t))]);
@@ -70,25 +86,24 @@ maxy = max([abs(min(Theta)) abs(max(Theta))]);
 yticks1 = (-1.1*maxy : 1.1*maxy/5 : 1.1*maxy);
 
 % Límites para el eje y izquierdo.
-ylim(axes1, [yticks1(1) yticks1(length(yticks1))]);
+ylim(yyax(1), [yticks1(1) yticks1(length(yticks1))]);
 
 % Muestro la "caja" que contiene al gráfico.
 box(axes1,'on');
 
-% Set the remaining axes properties
+% Seteo las propiedades del eje de abcisas.
 set(axes1, 'FontSize',14, 'XGrid','on','XMinorTick','on','XTick',...
+    (t(1): 0.5: t(length(t))),...
+    'TickLabelInterpreter','tex');
+
+% Seteo las propiedades del eje de ordenadas 1.
+set(yyax(1), 'FontSize',14, 'XGrid','on','XMinorTick','on','XTick',...
     (t(1): 0.5: t(length(t))),...
     'YGrid','on','YMinorTick','on','YTick',...
     yticks1, 'TickLabelInterpreter','tex');
 
-% Retengo los ejes.
-hold(axes1, 'on');
-
-% Activo eje izquierdo.
-yyaxis(axes1, 'right');
-
 % Seteo el label para y.
-ylabel(axes1, '\Omega [rad/s]');
+ylabel(yyax(2), '\Omega [rad/s]');
 
 % Determino los límites.
 maxy = max([abs(min(Omega)) abs(max(Omega))]);
@@ -97,20 +112,15 @@ maxy = max([abs(min(Omega)) abs(max(Omega))]);
 yticks2 = (-1.1*maxy : 1.1*maxy/5 : 1.1*maxy);
 
 % Límites para el eje y izquierdo.
-ylim(axes1, [yticks2(1) yticks2(length(yticks2))]);
+ylim(yyax(2), [yticks2(1) yticks2(length(yticks2))]);
 
-% Creo el gráfico de Omega.
-plot(axes1, t, Omega, 'Color', [0 0 1]);
-
-% Set the remaining axes properties
-set(axes1, 'FontSize',14, ...
+% Seteo las propiedades del eje de ordenadas 2.
+set(yyax(2), 'FontSize',14,...
     'YGrid','on','YMinorTick','on','YTick',...
     yticks2, 'TickLabelInterpreter','tex');
 
-% Seteo color de los ejes.
-axes1.YAxis(1).Color = [1 0 0];
-axes1.YAxis(2).Color = [0 0 1];
-
+% Fuerzo a que se muestre al gráfico de inmediato.
+drawnow;
 
 % Asigno el valor del handle del gráfico que devuelvo.
 graphic_handle = figure1;
