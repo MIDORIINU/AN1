@@ -13,23 +13,27 @@ A continuación se listan los archivos de \textbf{MATLAB} y su función: \\\\
 
 \textbf{\quotemarks{plot\_solution.m}}~(apéndice~\apendref{apendix:file_pts}): Función que grafica el ángulo y la velocidad obtenidas.\\
 
-\textbf{\quotemarks{trapezcomp.m}}~(apéndice~\apendref{apendix:file_trapezcomp}): Función que implementa el método de integración de trapecios compuesto (usado en Romberg).\\
+\textbf{\quotemarks{trapezcomp\_rk4.m}}~(apéndice~\apendref{apendix:file_trapezcomp_rk4}): Función que implementa el método de integración de trapecios compuesto adaptado a usar Runge-Kutta 4 (usado en Romberg).\\
 
-\textbf{\quotemarks{romberg.m}}~(apéndice~\apendref{apendix:file_romberg}): Función que implementa el método de integración de Romberg.\\
+\textbf{\quotemarks{romberg\_rk4.m}}~(apéndice~\apendref{apendix:file_romberg_rk4}): Función que implementa el método de integración de Romberg adaptado a usar Runge-Kutta de orden 4.\\
+
+\textbf{\quotemarks{f\_rk4\_num\_sol.m}}~(apéndice~\apendref{apendix:file_f_rk4_num_sol}): Función auxiliar que se usa para generar un handle a función que lleva implicito el sistema de ecuaciones diferenciales a resolver por Runge Kutta de orden 4, se usa en el método adaptado de Romberg.\\
+
+
+
 
 En el apéndice correspondiente~(apéndice~\apendref{apendix:files}) se incluye el código completo de cada archivo.\\\\
 
 \textbf{\quotemarks{salida.txt}}~(apéndice~\apendref{apendix:file_salida}): La salida del script principal, se captura automáticamente en \textbf{MATLAB} al ejecutar el script principal.\\\\
 
 
-Algo importante a aclarar, es que decidimos implementar el método de integración de Romberg en su forma \quotemarks{standard}, en esta forma se requiere la evaluación de la función a integrar en puntos arbitrarios, para poder luego integrar la función que representa el módulo de la posición del péndulo, se interpoló la función entre los puntos obtenidos con Runge-Kutta, usando un spline. Esta no era la única forma de realizar la integración, pero era la que mas se adaptaba a usar el algoritmo de Romberg sin modificaciones, además era muy simple dado que \textbf{MATLAB} y \textbf{Octave} proveen la función \textbf{interp1} que puede realizar distintos tipos de interpolación sobre un array de puntos, entre ellas, spline.
-El método de Romberg se implementó,así como está descripto en la bibliografía, usando interpolación de Richardson y el método de trapecios compuesto, para lo cual se implementó el mismo, también en su forma \quotemarks{standard}.\\
+El método de Romberg se implementó de manera de llamar a Runge-Kutta de orden 4, se optimizó de modo que solo se hace una llamada, para lograr esto se aprovechó el hecho de que el método de trapecios compuesto que se llama en cada nivel de Romberg, tiene un paso que es la mitad que en el nivel anterior, por lo tanto solo se resuelve el sistema para el paso mas pequeño, que corresponde al último nivel, luego en cada nivel se llama a una versión adaptada de trapecios que saltea los puntos necesarios para el paso necesario (se saltean $2^{(p - k)}$ donde $p$ es el nivel de Romberg, y $k$ corresponde al nivel en que se está calculando).
 
-El error del método de integración de Romberg ($R_{n,n}$), asumiendo que la función es suficientemente diferenciable, está en $O \left(  h^{\left( 2 \cdot n + 2 \right)}  \right)$, donde h es el paso, que en el caso de esté método, vale en cada iteración $h = \frac{1}{2^{n}} \cdot \left( a - b \right)$, siendo $a$ y $b$ los límites de integración y $n$ el número de iteración.\\
+El método de Romberg se implementó,así como está descripto en la bibliografía, usando interpolación de Richardson y el método de trapecios compuesto, con las modificaciones antes mencionadas.\\
 
-El hecho de que usemos interpolación en la función que integramos, sin embargo, hace que este error no sea del todo correcto, una determinación mas detallada, haría necesario analizar como afecta el spline este resultado. Dado que usamos un nivel de Romberg de $6$ y el intervalo tiene en todos los casos una longitud de $20 \si[per-mode=symbol]{\second}$, ignorando la cuestión de la interpolación, tendríamos un error del orden de $0.3$.
+El error del método de integración de Romberg ($R_{n,n}$), asumiendo que la función es suficientemente diferenciable, está en $O \left(  h^{\left( 2 \cdot p  \right)}  \right)$, donde $h$ es el paso, que en el caso de esté método, vale en cada nivel $h = \frac{1}{2^{n}} \cdot \left( b - a \right)$, siendo $a$ y $b$ los límites de integración y $n$ el nivel, con lo que se tiene un error que está en $O \left( \frac{1}{2^{p}} \cdot \left( b - a \right)  \right)$ para el método de nivel $p$.\\
 
-
+El nivel de Romberg usado fue de $15$, así que se espera un error del orden de $\frac{1}{2^{p}} \cdot \left( b - a \right) = \frac{20 - 0}{2^{30}} = 2 \times 10^{-8}$.
 
 
 
