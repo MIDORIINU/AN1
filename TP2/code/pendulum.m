@@ -102,7 +102,7 @@ f = @(t,x) [x(2); ...            % Sistema de dos ecuaciones del péndulo.
     -(b/m)*x(2)- ...
     (g/l)*sin(x(1))];              
 
-[t, x] = rk4(f, [0 tend + h],... % Llamo a Runge-Kutta de curato orden.
+[t, x] = rk4(f, [0 tend + h],... % Llamo a Runge-Kutta de cuarto orden.
     [Theta_0, Omega_0], h); 
 
 s = 1;

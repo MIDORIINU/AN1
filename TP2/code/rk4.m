@@ -3,7 +3,7 @@
 % Parámetros:
 % -----------
 % f:        Puntero a la función que toma un valor escalar y devuelve un
-%           array de m valores correspondientes a las m funciones solución
+%           array de m valores correspondientes a las m funciones
 %           del sistema a aproximar.
 % tspan:    Array de dos valores con el valor inicial y final del
 %           intervalo en el cual aproximar las funciones.

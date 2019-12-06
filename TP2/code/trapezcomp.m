@@ -17,6 +17,7 @@ x = a;
 
 %Regla compuesta.
 In =f(a);
+
 for k=2:n
     x  = x + h;
     In = In + 2. * f(x);
