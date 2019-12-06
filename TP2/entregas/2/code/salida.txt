@@ -1,0 +1,70 @@
+Inicializando las variables globales para el TP2...Listo
+
+Trabajando en: MATLAB 9.7.0.1190202 (R2019b) sobre Windows.
+
+
+
+Creando el directorio para las imágenes...Listo
+
+Creando el directorio para los resultados numéricos...Listo
+
+
+
+Cálculos para los parámetros pedidos:
+
+Calculando la estimación de la solución del sistema con m = 1.000Kg, l = 1.000m, b = 0.000Ns/m,
+h = 0.200s, Theta0 = 30.000º, Omega0 = 0.000º/s...Listo
+
+Salvando los resultados en un archivo "CSV"......Listo
+
+Generando un gráfico de la solución...Listo
+
+Salvando el gráfico en un archivo "PNG"......Listo
+
+Calculando la integral del módulo de la posición......Listo
+
+El valor de la integral aproximada con Romberg de nivel 15 del módulo de la posición es: 6.6541496163424361.
+
+
+Calculando la estimación de la solución del sistema con m = 1.000Kg, l = 1.000m, b = 0.500Ns/m,
+h = 0.200s, Theta0 = 30.000º, Omega0 = 100.000º/s...Listo
+
+Salvando los resultados en un archivo "CSV"......Listo
+
+Generando un gráfico de la solución...Listo
+
+Salvando el gráfico en un archivo "PNG"......Listo
+
+Calculando la integral del módulo de la posición......Listo
+
+El valor de la integral aproximada con Romberg de nivel 15 del módulo de la posición es: 2.1010993325885252.
+
+
+
+Cálculos para parámetros ingresados por el usuario:
+
+Calculando la estimación de la solución del sistema con m = 1.000Kg, l = 1.000m, b = 0.500Ns/m,
+h = 0.001s, Theta0 = 30.000º, Omega0 = 100.000º/s...Listo
+
+Generando un gráfico de la solución...Listo
+
+Calculando la integral del módulo de la posición......Listo
+
+El valor de la integral aproximada con Romberg de nivel 15 del módulo de la posición es: 2.1010993325885252.
+
+
+Calculando la estimación de la solución del sistema con m = 1.000Kg, l = 1.000m, b = 5.000Ns/m,
+h = 0.001s, Theta0 = 30.000º, Omega0 = 0.000º/s...Listo
+
+Generando un gráfico de la solución...Listo
+
+Calculando la integral del módulo de la posición......Listo
+
+El valor de la integral aproximada con Romberg de nivel 15 del módulo de la posición es: 0.2855416685189804.
+
+
+
+
+
+Ejecución del TP2 terminada.
+
