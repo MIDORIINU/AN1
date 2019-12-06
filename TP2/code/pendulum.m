@@ -29,7 +29,7 @@
 %           funciones solución en los valores de la variable independiente 
 %           correspondientes al mismo índice en el array t.
 %
-function [t, x, s] = pendulum(tend, h, b, l, m, Theta_0, Omega_0)
+function [t, x, f_sol, s] = pendulum(tend, h, b, l, m, Theta_0, Omega_0)
 
 if (nargin < 2)
     fprintf(strjoin({'\nError: ',...
@@ -104,6 +104,14 @@ f = @(t,x) [x(2); ...            % Sistema de dos ecuaciones del péndulo.
 
 [t, x] = rk4(f, [0 tend + h],... % Llamo a Runge-Kutta de cuarto orden.
     [Theta_0, Omega_0], h); 
+
+
+% Genero el handle a función que lleva implícito el sistema a resolver
+% por Runge-Kutta de orden 4, y el índice a la solución que se quiere
+% obtener, se usa para el cálculo de la integral.
+f_sol = @(a, b, step) ...
+    abs(f_rk4_num_sol(f, [a, b], [Theta_0, Omega_0], step, 1));
+
 
 s = 1;
 

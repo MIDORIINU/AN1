@@ -97,13 +97,13 @@ respuesta_2 = '_2';
 % Tiempo final.
 tend = 20;
 
-% Cantidad de filas para Romberg.
-romberg_levels = 10;
+% Cantidad de niveles para Romberg.
+romberg_rk4_levels = 15;
 
 % En el caso de Ocatve reduzco los nivels porque es menos eficiente y
 % tarda demasiado.
 if (Is_Octave)
-    romberg_levels = 6;
+    romberg_rk4_levels = 9;
 end % if
 
 fprintf('Listo\n\n');
@@ -155,151 +155,112 @@ end
 % Seteo el formato de números por pantalla.
 format long;
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%
-% Cálculo para el primer juego de parámetros.
-
-fprintf(strjoin({'Calculando la estimación de '...
-    'la solución del sistema con m = 1Kg, l = 1m, ' ...
-    'b = 0Ns/m, h = 0.2s, Theta0 = pi/6, Omega0 = 0...'}, ''));
-
-% Resuelvo la ecuación del péndulo para los parámetros dados.
-% tend, h, b, l, m, Theta_0, Omega_0
-[t, x, ~] = pendulum(tend, 0.2, 0, 1, 1, pi/6, 0);
-
-% Generación completa.
-fprintf('Listo\n\n');
-
-% Guardo los resultados en un archivo.
-fprintf('Salvando los resultados en un archivo "CSV"......');
-
-% Armo la tabla de resultados finales con:
-% 1 - Tiempo.
-% 2 - Theta.
-% 3 - d(Theta)/dt.
-results = [t', x(:,1), x(:,2)];
-
-% Guardo la tabla de las iteraciones.
-dlmwrite(fullfile(results_directory, ...
-    strjoin({solutions_prefix, respuesta_1, '.csv'}, '')), ...
-    results, 'precision', '%.15f');
-
-% Guardado completo.
-fprintf('Listo\n\n');
-
-% Genero el gráfico de la  solución.
-fprintf('Generando un gráfico de la solución...');
-
-graphic_handle1 = ...
-    plot_solution(t, x(:,1)', x(:,2)', 'Ángulo y velocidad', 100);
-
-% Generación completa.
-fprintf('Listo\n\n');
-
-%%%
-solution_complete_name = ...
-    fullfile(images_directory, ...
-    strjoin({grafico_respuesta_prefix, grafico_1, ...
-    '.png'}, ''));
-
-fprintf('Salvando el gráfico en un archivo "PNG"......');
-
-% Salvo el gráfico en un archivo.
-saveas(graphic_handle1, solution_complete_name);
-
-% Salvado completo.
-fprintf('Listo\n\n');
-%%%
-
-fprintf('Calculando la integral del módulo de la posición......');
-
-% Genero la función del módulo interpolada usando spline.
-fint = @(y) interp1(t, abs(x(:,1)'),  y, 'spline');
-
-% Calculo la integral usando Romberg.
-I_romb = romberg(fint, 0, tend, romberg_levels);
-
-% Listo.
-fprintf('Listo\n\n');
-
-fprintf(strjoin({'El valor de la integral aproximada con Romberg del ' ...
-    'módulo de la posición es: %.16f.\n\n'}, ''), ...
-    I_romb(size(I_romb,1), size(I_romb,2)));
+fprintf('\n\nCálculos para los parámetros pedidos:\n\n');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
-% Cálculo para el segundo juego de parámetros.
+% Cálculo para los parámetros pedidos.
 
-fprintf(strjoin({'Calculando la estimación de '...
-    'la solución del sistema con m = 1Kg, l = 1m, ' ...
-    'b = 0.5Ns/m, h = 0.2s, Theta0 = pi/6, Omega0 = 5*pi/6...'}, ''));
+% Masa.
+m_given = [1 1];
 
-% Resuelvo la ecuación del péndulo para los parámetros dados.
-% tend, h, b, l, m, Theta_0, Omega_0
-[t, x, s] = pendulum(tend, 0.2, 0.5, 1, 1, pi/6, 5*pi/6);
+% Longitud del hilo.
+l_given = [1 1];
 
-% Generación completa.
-fprintf('Listo\n\n');
+% Rozamiento.
+b_given = [0 0.5];
 
-% Guardo los resultados en un archivo.
-fprintf('Salvando los resultados en un archivo "CSV"......');
+% Paso.
+h_given = [0.2 0.2];
 
-% Armo la tabla de resultados finales con:
-% 1 - Tiempo.
-% 2 - Theta.
-% 3 - d(Theta)/dt.
-results = [t', x(:,1), x(:,2)];
+% Ángulo inicial.
+Theta_0_given = [30 30];
 
-% Guardo la tabla de las iteraciones.
-dlmwrite(fullfile(results_directory, ...
-    strjoin({solutions_prefix, respuesta_2, '.csv'}, '')), ...
-    results, 'precision', '%.15f');
+% Velocidad angular inicial.
+Omega_0_given = [0 100];
 
-% Guardado completo.
-fprintf('Listo\n\n');
+for i=1:2
+    
+    fprintf(strjoin({'Calculando la estimación de '...
+        'la solución del sistema con m = %.3fKg, l = %.3fm, ' ...
+        'b = %.3fNs/m,\nh = %.3fs, Theta0 = %.3fº,', ...
+        ' Omega0 = %.3fº/s...'}, ''), ...
+        m_given(i), l_given(i), b_given(i), h_given(i), ...
+        Theta_0_given(i), Omega_0_given(i));
+    
+    % Resuelvo la ecuación del péndulo para los parámetros dados.
+    % tend, h, b, l, m, Theta_0, Omega_0
+    [t, x, f_sol, ~] = pendulum(tend, h_given(i), b_given(i), ...
+        l_given(i), m_given(i), ...
+        Theta_0_given(i)*pi/180, Omega_0_given(i)*pi/180);
+    
+    % Generación completa.
+    fprintf('Listo\n\n');
+    
+    % Guardo los resultados en un archivo.
+    fprintf('Salvando los resultados en un archivo "CSV"......');
+    
+    % Armo la tabla de resultados finales con:
+    % 1 - Tiempo.
+    % 2 - Theta.
+    % 3 - d(Theta)/dt.
+    results = [t', x(:,1), x(:,2)];
+    
+    % Guardo la tabla de las iteraciones.
+    dlmwrite(fullfile(results_directory, ...
+        strjoin({solutions_prefix, respuesta_1, '.csv'}, '')), ...
+        results, 'precision', '%.15f');
+    
+    % Guardado completo.
+    fprintf('Listo\n\n');
+    
+    % Genero el gráfico de la  solución.
+    fprintf('Generando un gráfico de la solución...');
+    
+    graphic_handle1 = ...
+        plot_solution(t, x(:,1)', x(:,2)', 'Ángulo y velocidad', 100);
+    
+    % Generación completa.
+    fprintf('Listo\n\n');
+    
+    %%%
+    solution_complete_name = ...
+        fullfile(images_directory, ...
+        strjoin({grafico_respuesta_prefix, grafico_1, ...
+        '.png'}, ''));
+    
+    fprintf('Salvando el gráfico en un archivo "PNG"......');
+    
+    % Salvo el gráfico en un archivo.
+    saveas(graphic_handle1, solution_complete_name);
+    
+    % Salvado completo.
+    fprintf('Listo\n\n');
+    %%%
+    
+    fprintf('Calculando la integral del módulo de la posición......');
+    
+    % Calculo la integral usando Romberg.
+    I_romb = romberg_rk4(f_sol, 0, tend, romberg_rk4_levels);
+    
+    % Listo.
+    fprintf('Listo\n\n');
+    
+    fprintf(strjoin({'El valor de la integral aproximada con Romberg ' ...
+        'de nivel %u del módulo de la posición es: %.16f.\n\n'}, ''), ...
+        romberg_rk4_levels, I_romb(size(I_romb,1), size(I_romb,2)));
+    
+    fprintf('\n');
+    
+end
 
-% Genero el gráfico de la  solución.
-fprintf('Generando un gráfico de la solución...');
-
-graphic_handle2 = ...
-    plot_solution(t, x(:,1)', x(:,2)', 'Ángulo y velocidad', 100);
-
-% Generación completa.
-fprintf('Listo\n\n');
-
-%%%
-solution_complete_name = ...
-    fullfile(images_directory, ...
-    strjoin({grafico_respuesta_prefix, grafico_2, ...
-    '.png'}, ''));
-
-fprintf('Salvando el gráfico en un archivo "PNG"......');
-
-% Salvo el gráfico en un archivo.
-saveas(graphic_handle2, solution_complete_name);
-
-% Salvado completo.
-fprintf('Listo\n\n');
-%%%
-
-fprintf('Calculando la integral del módulo de la posición......');
-
-% Genero la función del módulo interpolada usando spline.
-fint = @(y) interp1(t, abs(x(:,1)'),  y, 'spline');
-
-% Calculo la integral usando Romberg.
-I_romb = romberg(fint, 0, tend, romberg_levels);
-
-% Listo.
-fprintf('Listo\n\n');
-
-fprintf(strjoin({'El valor de la integral aproximada con Romberg del ' ...
-    'módulo de la posición es: %.16f.\n\n'}, ''), ...
-    I_romb(size(I_romb,1), size(I_romb,2)));
+fprintf('\n');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
 % Cálculo para parámetros dados por el usuario.
+
+fprintf('Cálculos para parámetros ingresados por el usuario:\n\n');
 
 while (1)
     
@@ -318,16 +279,16 @@ while (1)
     h = 0.001;
     
     % Ángulo inicial.
-    Theta_0 = pi/6;
+    Theta_0 = 30;
     
     % Velocidad angular inicial.
-    Omega_0 = 5*pi/6;
+    Omega_0 = 100;
     
     % En el caso de Octave, un valor muy chico causa problemas
     if (Is_Octave)
         h = 0.01;
     end
-    
+        
     answer = questdlg(strjoin({'¿Desea resolver el sistema', ...
         ' para otros parámetros?'}, ''), ...
         'Pregunta', 'Si', 'No', 'No');
@@ -338,15 +299,15 @@ while (1)
     
     % Pido los datos para resolver el problema.
     answer = inputdlg({'Masa del péndulo [Kg]','Largo del hilo (m)', ...
-        'Rozamiento [Kg/s]', 'Paso [s]', 'Ángulo inicial [rad]', ...
-        'Velocidad angular inicial [rad/s]'},...
+        'Rozamiento [Kg/s]', 'Paso [s]', 'Ángulo inicial [º]', ...
+        'Velocidad angular inicial [º/s]'},...
         'Parámetros del sistema', ...
         [1 50; 1 50; 1 50; 1 50; 1 50; 1 50], ...
         {num2str(m, 16) num2str(l, 16) num2str(b, 16) num2str(h, 16) ...
         num2str(Theta_0, 16) num2str(Omega_0, 16)});
     
     % Valido los datos.
-    if (isempty(answer))        
+    if (isempty(answer))
         continue;
         
     end % if
@@ -377,10 +338,14 @@ while (1)
     end %if
     
     fprintf(strjoin({'Calculando la estimación de '...
-        'la solución del sistema...'}, ''));
+        'la solución del sistema con m = %.3fKg, l = %.3fm, ' ...
+        'b = %.3fNs/m,\nh = %.3fs, Theta0 = %.3fº,', ...
+        ' Omega0 = %.3fº/s...'}, ''), ...
+        m, l, b, h, Theta_0, Omega_0);
     
     % Resuelvo la ecuación del péndulo para los parámetros dados.
-    [t, x, s] = pendulum(tend, h, b, l, m, Theta_0, Omega_0);
+    [t, x, f_sol, s] = pendulum(tend, h, b, l, m, ...
+        Theta_0*pi/180, Omega_0*pi/180);
     
     if (~s)
         continue;
@@ -403,25 +368,24 @@ while (1)
     
     % Listo.
     fprintf('Listo\n\n');
-
-    
     
     fprintf('Calculando la integral del módulo de la posición......');
     
-    % Genero la función del módulo interpolada usando spline.
-    fint = @(y) interp1(t, abs(x(:,1)'),  y, 'spline');
-    
     % Calculo la integral usando Romberg.
-    I_romb = romberg(fint, 0, tend, romberg_levels);
+    I_romb = romberg_rk4(f_sol, 0, tend, romberg_rk4_levels);
     
     % Listo.
     fprintf('Listo\n\n');
     
-    fprintf(strjoin({'El valor de la integral aproximada con Romberg del ' ...
-        'módulo de la posición es: %.16f.\n\n'}, ''), ...
-        I_romb(size(I_romb,1), size(I_romb,2)));
-        
+    fprintf(strjoin({'El valor de la integral aproximada con Romberg ' ...
+        'de nivel %u del módulo de la posición es: %.16f.\n\n'}, ''), ...
+        romberg_rk4_levels, I_romb(size(I_romb,1), size(I_romb,2)));
+    
+    fprintf('\n');
+    
 end
+
+fprintf('\n');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
@@ -447,5 +411,3 @@ if (~status)
 else %if
     fprintf('Listo\n\n');
 end %if
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

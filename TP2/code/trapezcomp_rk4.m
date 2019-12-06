@@ -1,8 +1,11 @@
-% Implementa el método de Trapecios.
+% Implementa el método de Trapecios adaptado para usar Runge-Kutta.
 %
 % Parámetros:
 % -----------
-% f:        Puntero a la función que cuya integral se desea aproximar.
+% x:        Array con los puntos de la función a la cual calcular la
+%           aproximación de la integral, contiene 2^(p - 1) + 1 puntos,
+%           pero salteo de a 2^(p - k), usando efectivamente 2^(k - 1) + a
+%           puntos en el cálculo.
 % a:        Inicio del intervalo de integración.
 % b:        Fin del intervalo de integración.
 % n:        Número de paneles.
@@ -13,8 +16,6 @@ function In = trapezcomp_rk4(x, a, b, k, p)
 
 % Incialización.
 h = (b-a)/(2^(k-1));
-%s = a;
-
 
 loop_step = 2^(p - k);
 loop_start = 1 + loop_step;
