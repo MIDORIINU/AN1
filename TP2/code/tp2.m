@@ -179,6 +179,9 @@ Theta_0_given = [30 30];
 % Velocidad angular inicial.
 Omega_0_given = [0 100];
 
+% Nombre de los gráficos.
+grafico = {grafico_1 grafico_2};
+
 for i=1:2
     
     fprintf(strjoin({'Calculando la estimación de '...
@@ -226,7 +229,7 @@ for i=1:2
     %%%
     solution_complete_name = ...
         fullfile(images_directory, ...
-        strjoin({grafico_respuesta_prefix, grafico_1, ...
+        strjoin({grafico_respuesta_prefix, grafico{i}, ...
         '.png'}, ''));
     
     fprintf('Salvando el gráfico en un archivo "PNG"......');
